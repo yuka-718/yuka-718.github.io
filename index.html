@@ -5,45 +5,53 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
   <title>Yuka Ito</title>
+
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       min-height: 100vh;
       display: grid;
       place-items: center;
-      background: #f5f5f8;
+      background: #f4f4f7;
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
       color: #111;
       overflow: hidden;
     }
 
     .stage {
-      width: min(1180px, 88vw);
-      min-height: 620px;
+      width: min(1180px, calc(100vw - 48px), calc((100vh - 48px) * 16 / 9));
+      aspect-ratio: 16 / 9;
       display: grid;
       place-items: center;
       background: #bff8ff;
-      padding: 70px;
-      box-sizing: border-box;
+      padding: 6%;
       transform: scaleX(0.04) scaleY(0.02);
       animation: openStage 900ms cubic-bezier(.2, .9, .2, 1) forwards;
     }
 
     .window {
       width: 100%;
+      height: 100%;
       max-width: 980px;
+      max-height: 520px;
+      display: flex;
+      flex-direction: column;
       background: #ffb6e6;
       border-radius: 28px;
       padding: 22px;
-      box-sizing: border-box;
       opacity: 0;
-      transform: translateY(30px) scale(.92);
+      transform: translateY(28px) scale(.92);
       animation: popWindow 700ms cubic-bezier(.2, .9, .2, 1) 650ms forwards;
     }
 
     .dots {
       display: flex;
       gap: 12px;
+      flex: 0 0 auto;
       margin-bottom: 24px;
     }
 
@@ -54,68 +62,99 @@
       animation: bounce 1.4s ease-in-out infinite;
     }
 
-    .dot:nth-child(2) { animation-delay: .15s; }
-    .dot:nth-child(3) { animation-delay: .3s; }
+    .dot:nth-child(2) {
+      animation-delay: .15s;
+    }
+
+    .dot:nth-child(3) {
+      animation-delay: .3s;
+    }
 
     .pink { background: #ff1aaa; }
     .yellow { background: #ffdc4d; }
     .blue { background: #49d8df; }
 
     .code {
-      min-height: 400px;
+      flex: 1;
+      margin: 0;
       background: white;
       border-radius: 28px;
       padding: 18px;
-      font-size: clamp(18px, 3vw, 34px);
+      font-size: clamp(13px, 2.45vw, 34px);
       line-height: 1.35;
       white-space: pre-wrap;
-      overflow-x: auto;
+      overflow: hidden;
     }
 
     .kw { color: #4f75ff; }
     .name { color: #ff741f; }
-    .str { color: #24ee83; }
+    .str { color: #20ee82; }
 
     .cursor {
       display: inline-block;
       width: .55em;
       height: 1em;
+      margin-left: 2px;
       background: #111;
       vertical-align: -0.12em;
       animation: blink .75s steps(1) infinite;
     }
 
     @keyframes openStage {
-      0% { transform: scaleX(0.04) scaleY(0.02); border-radius: 999px; }
-      55% { transform: scaleX(1) scaleY(0.04); border-radius: 999px; }
-      100% { transform: scaleX(1) scaleY(1); border-radius: 0; }
+      0% {
+        transform: scaleX(0.04) scaleY(0.02);
+        border-radius: 999px;
+      }
+      55% {
+        transform: scaleX(1) scaleY(0.04);
+        border-radius: 999px;
+      }
+      100% {
+        transform: scaleX(1) scaleY(1);
+        border-radius: 0;
+      }
     }
 
     @keyframes popWindow {
-      to { opacity: 1; transform: translateY(0) scale(1); }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
     }
 
     @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-7px); }
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-7px);
+      }
     }
 
     @keyframes blink {
-      50% { opacity: 0; }
+      50% {
+        opacity: 0;
+      }
     }
 
     @media (max-width: 700px) {
-      body { overflow: auto; }
+      body {
+        overflow: auto;
+      }
 
       .stage {
-        width: 100vw;
-        min-height: 100vh;
-        padding: 26px;
+        width: min(calc(100vw - 24px), calc((100vh - 24px) * 16 / 9));
+        padding: 5%;
       }
 
       .window {
-        border-radius: 22px;
-        padding: 16px;
+        border-radius: 20px;
+        padding: 14px;
+      }
+
+      .dots {
+        gap: 8px;
+        margin-bottom: 14px;
       }
 
       .dot {
@@ -124,51 +163,81 @@
       }
 
       .code {
-        min-height: 360px;
-        border-radius: 20px;
-        padding: 14px;
+        border-radius: 18px;
+        padding: 12px;
+        font-size: clamp(10px, 2.9vw, 18px);
       }
     }
   </style>
 </head>
+
 <body>
   <main class="stage">
-    <section class="window">
-      <div class="dots">
+    <section class="window" aria-label="Profile window">
+      <div class="dots" aria-hidden="true">
         <span class="dot pink"></span>
         <span class="dot yellow"></span>
         <span class="dot blue"></span>
       </div>
 
-      <pre class="code" id="code"></pre>
+      <pre class="code" id="code" aria-label="Profile code"></pre>
     </section>
   </main>
 
   <script>
-    const code = `<span class="kw">class</span> <span class="name">Profile</span>:
+    const code = document.getElementById("code");
 
-  <span class="kw">def</span> <span class="name">__init__</span>(self):
-    self.name = <span class="str">"Yuka Ito"</span>
-    self.birth_date = <span class="str">"2008/7/18"</span>
-    self.blood_type = <span class="str">"O"</span>
-    self.other = [
-      <span class="str">"未踏ジュニア2026"</span>
-      <span class="str">"情報科学の達人6期生"</span>
-    ]
+    const parts = [
+      ["class", "kw"], [" ", ""], ["Profile", "name"], [":\n\n", ""],
+      ["  def", "kw"], [" ", ""], ["__init__", "name"], ["(self):\n", ""],
+      ["    self.name = ", ""], ['"Yuka Ito"', "str"], ["\n", ""],
+      ["    self.birth_date = ", ""], ['"2008/7/18"', "str"], ["\n", ""],
+      ["    self.blood_type = ", ""], ['"O"', "str"], ["\n", ""],
+      ["    self.other = [\n", ""],
+      ["      ", ""], ['"未踏ジュニア2026"', "str"], ["\n", ""],
+      ["      ", ""], ['"情報科学の達人6期生"', "str"], ["\n", ""],
+      ["    ]\n\n", ""],
+      ["me = Profile()", ""]
+    ];
 
-me = Profile()`;
+    const cursor = document.createElement("span");
+    cursor.className = "cursor";
 
-    const el = document.getElementById("code");
-    let i = 0;
+    let partIndex = 0;
+    let charIndex = 0;
+    let currentSpan = null;
 
-    function type() {
-      el.innerHTML = code.slice(0, i) + '<span class="cursor"></span>';
-      i += 3;
-      if (i <= code.length) requestAnimationFrame(type);
-      else el.innerHTML = code + '<span class="cursor"></span>';
+    function makeSpan(className) {
+      const span = document.createElement("span");
+      if (className) span.className = className;
+      code.insertBefore(span, cursor);
+      return span;
     }
 
-    setTimeout(type, 1200);
+    function typeCode() {
+      if (!cursor.parentNode) code.appendChild(cursor);
+
+      if (partIndex >= parts.length) return;
+
+      const text = parts[partIndex][0];
+      const className = parts[partIndex][1];
+
+      if (!currentSpan) currentSpan = makeSpan(className);
+
+      currentSpan.textContent += text[charIndex];
+      charIndex += 1;
+
+      if (charIndex >= text.length) {
+        partIndex += 1;
+        charIndex = 0;
+        currentSpan = null;
+      }
+
+      const delay = text[charIndex - 1] === "\n" ? 90 : 22;
+      setTimeout(typeCode, delay);
+    }
+
+    setTimeout(typeCode, 1250);
   </script>
 </body>
 </html>
