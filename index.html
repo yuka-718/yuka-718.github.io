@@ -3,51 +3,113 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>yuka-718</title>
+  <title>Yuka Ito</title>
   <style>
     body {
       margin: 0;
-      font-family: system-ui, sans-serif;
-      background: linear-gradient(135deg, #fff5fb, #eef9ff);
-      color: #2b2b35;
-    }
-    main {
       min-height: 100vh;
       display: grid;
       place-items: center;
-      padding: 32px;
+      background: #f4f4f7;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      color: #111;
     }
-    section {
-      max-width: 720px;
-      text-align: center;
+
+    .stage {
+      width: min(1180px, 88vw);
+      min-height: 620px;
+      display: grid;
+      place-items: center;
+      background: #bff8ff;
+      padding: 70px;
+      box-sizing: border-box;
     }
-    h1 {
-      font-size: clamp(48px, 9vw, 96px);
-      margin: 0;
+
+    .window {
+      width: 100%;
+      max-width: 980px;
+      background: #ffb6e6;
+      border-radius: 28px;
+      padding: 22px;
+      box-sizing: border-box;
     }
-    p {
-      font-size: 20px;
-      line-height: 1.8;
+
+    .dots {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
     }
-    a {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 14px 24px;
-      border-radius: 999px;
-      background: #ff75b7;
-      color: white;
-      text-decoration: none;
-      font-weight: 700;
-      box-shadow: 0 12px 30px #ff75b755;
+
+    .dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+    }
+
+    .pink { background: #ff1aaa; }
+    .yellow { background: #ffdc4d; }
+    .blue { background: #49d8df; }
+
+    .code {
+      background: white;
+      border-radius: 28px;
+      padding: 12px 18px;
+      font-size: clamp(18px, 3vw, 34px);
+      line-height: 1.35;
+      white-space: pre-wrap;
+      overflow-x: auto;
+    }
+
+    .kw { color: #4f75ff; }
+    .name { color: #ff741f; }
+    .str { color: #24ee83; }
+    .plain { color: #000; }
+
+    @media (max-width: 700px) {
+      .stage {
+        width: 100vw;
+        min-height: 100vh;
+        padding: 26px;
+      }
+
+      .window {
+        border-radius: 22px;
+        padding: 16px;
+      }
+
+      .dot {
+        width: 18px;
+        height: 18px;
+      }
+
+      .code {
+        border-radius: 20px;
+        padding: 14px;
+      }
     }
   </style>
 </head>
 <body>
-  <main>
-    <section>
-      <h1>yuka-718</h1>
-      <p>めちゃかわハイクオリティサイト、ここから育てていくよ。</p>
-      <a href="https://github.com/yuka-718">GitHubを見る</a>
+  <main class="stage">
+    <section class="window">
+      <div class="dots">
+        <span class="dot pink"></span>
+        <span class="dot yellow"></span>
+        <span class="dot blue"></span>
+      </div>
+
+      <pre class="code"><span class="kw">class</span> <span class="name">Profile</span>:
+
+  <span class="kw">def</span> <span class="name">__init__</span><span class="plain">(self):</span>
+    self.name = <span class="str">"Yuka Ito"</span>
+    self.birth_date = <span class="str">"2008/7/18"</span>
+    self.blood_type = <span class="str">"O"</span>
+    self.other = [
+      <span class="str">"未踏ジュニア2026"</span>
+      <span class="str">"情報科学の達人6期生"</span>
+    ]
+
+me = Profile()</pre>
     </section>
   </main>
 </body>
