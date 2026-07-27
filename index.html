@@ -55,18 +55,18 @@
     .unicorn-field {
       position: fixed;
       inset: 0;
-      z-index: 1;
+      z-index: 4;
       overflow: hidden;
       pointer-events: none;
     }
 
     .unicorn {
       position: absolute;
-      left: -16vw;
+      right: -18vw;
       top: var(--top);
       display: grid;
       place-items: center;
-      width: calc(var(--size) * 1.35);
+      width: calc(var(--size) * 1.55);
       height: var(--size);
       opacity: var(--opacity);
       filter:
@@ -78,60 +78,97 @@
     .unicorn::before {
       content: "";
       position: absolute;
-      right: 58%;
+      left: 58%;
       width: calc(var(--size) * 2.45);
       height: max(7px, calc(var(--size) * .16));
       border-radius: 999px;
-      background: linear-gradient(90deg, transparent, rgba(255, 142, 212, .58), rgba(255, 229, 125, .5), rgba(114, 234, 219, .5));
+      background: linear-gradient(90deg, rgba(114, 234, 219, .5), rgba(255, 229, 125, .5), rgba(255, 142, 212, .58), transparent);
       filter: blur(.4px);
       opacity: .72;
     }
 
-    .unicorn-icon {
+    .unicorn-pony {
       position: relative;
       z-index: 1;
       display: block;
-      font-size: var(--size);
-      line-height: 1;
+      width: 100%;
+      height: 100%;
       transform-origin: center;
       animation: unicornBob 1.9s ease-in-out infinite;
     }
 
-    .unicorn:nth-child(2) .unicorn-icon,
-    .unicorn:nth-child(4) .unicorn-icon {
+    .unicorn:nth-child(2) .unicorn-pony,
+    .unicorn:nth-child(4) .unicorn-pony {
       animation-delay: .45s;
     }
 
+    .unicorn-img {
+      position: relative;
+      z-index: 2;
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .unicorn-leg {
+      position: absolute;
+      z-index: 3;
+      bottom: 12%;
+      width: 9%;
+      height: 20%;
+      border: 1.6px solid #282431;
+      border-top: 0;
+      border-radius: 0 0 999px 999px;
+      background: #fffdfc;
+      transform-origin: 50% 5%;
+      animation: hoofFlutter .48s ease-in-out infinite;
+    }
+
+    .unicorn-leg.front {
+      left: 24%;
+    }
+
+    .unicorn-leg.mid {
+      left: 34%;
+      animation-delay: -.18s;
+    }
+
+    .unicorn-leg.back {
+      left: 58%;
+      animation-delay: -.3s;
+    }
+
     .unicorn.u1 {
-      --top: 16vh;
-      --size: 38px;
-      --duration: 18s;
-      --delay: -8s;
-      --opacity: .72;
+      --top: 8vh;
+      --size: 46px;
+      --duration: 16s;
+      --delay: -3s;
+      --opacity: .84;
     }
 
     .unicorn.u2 {
-      --top: 70vh;
-      --size: 46px;
-      --duration: 22s;
-      --delay: -2s;
-      --opacity: .62;
+      --top: 81vh;
+      --size: 52px;
+      --duration: 19s;
+      --delay: -8s;
+      --opacity: .78;
     }
 
     .unicorn.u3 {
-      --top: 38vh;
+      --top: 18vh;
       --size: 30px;
-      --duration: 16s;
-      --delay: -13s;
-      --opacity: .48;
+      --duration: 14s;
+      --delay: -11s;
+      --opacity: .42;
     }
 
     .unicorn.u4 {
-      --top: 84vh;
+      --top: 89vh;
       --size: 34px;
-      --duration: 20s;
-      --delay: -10s;
-      --opacity: .44;
+      --duration: 17s;
+      --delay: -1s;
+      --opacity: .48;
     }
 
     .window {
@@ -365,7 +402,7 @@
         translate: 0 0;
       }
       to {
-        translate: 132vw 0;
+        translate: -136vw 0;
       }
     }
 
@@ -375,6 +412,15 @@
       }
       50% {
         transform: translateY(-10px) rotate(5deg);
+      }
+    }
+
+    @keyframes hoofFlutter {
+      0%, 100% {
+        transform: rotate(-18deg) translateY(0);
+      }
+      50% {
+        transform: rotate(22deg) translateY(-2px);
       }
     }
 
@@ -512,7 +558,8 @@
 
     @media (prefers-reduced-motion: reduce) {
       .unicorn,
-      .unicorn-icon,
+      .unicorn-pony,
+      .unicorn-leg,
       .trail-sparkle,
       .magic-cursor::before,
       .window::before,
@@ -525,10 +572,38 @@
 
 <body>
   <div class="unicorn-field" aria-hidden="true">
-    <span class="unicorn u1"><span class="unicorn-icon">🦄</span></span>
-    <span class="unicorn u2"><span class="unicorn-icon">🦄</span></span>
-    <span class="unicorn u3"><span class="unicorn-icon">🦄</span></span>
-    <span class="unicorn u4"><span class="unicorn-icon">🦄</span></span>
+    <span class="unicorn u1">
+      <span class="unicorn-pony">
+        <img class="unicorn-img" src="assets/unicorn.png" alt="">
+        <span class="unicorn-leg front"></span>
+        <span class="unicorn-leg mid"></span>
+        <span class="unicorn-leg back"></span>
+      </span>
+    </span>
+    <span class="unicorn u2">
+      <span class="unicorn-pony">
+        <img class="unicorn-img" src="assets/unicorn.png" alt="">
+        <span class="unicorn-leg front"></span>
+        <span class="unicorn-leg mid"></span>
+        <span class="unicorn-leg back"></span>
+      </span>
+    </span>
+    <span class="unicorn u3">
+      <span class="unicorn-pony">
+        <img class="unicorn-img" src="assets/unicorn.png" alt="">
+        <span class="unicorn-leg front"></span>
+        <span class="unicorn-leg mid"></span>
+        <span class="unicorn-leg back"></span>
+      </span>
+    </span>
+    <span class="unicorn u4">
+      <span class="unicorn-pony">
+        <img class="unicorn-img" src="assets/unicorn.png" alt="">
+        <span class="unicorn-leg front"></span>
+        <span class="unicorn-leg mid"></span>
+        <span class="unicorn-leg back"></span>
+      </span>
+    </span>
   </div>
 
   <main class="stage">
