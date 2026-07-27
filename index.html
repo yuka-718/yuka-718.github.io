@@ -62,29 +62,39 @@
 
     .unicorn {
       position: absolute;
-      right: -18vw;
-      top: var(--top);
+      left: 0;
+      top: 0;
       display: grid;
       place-items: center;
       width: calc(var(--size) * 1.62);
       height: var(--size);
-      opacity: var(--opacity);
+      opacity: .94;
       filter:
-        drop-shadow(0 8px 12px rgba(181, 139, 255, .2))
-        drop-shadow(0 0 16px rgba(255, 142, 212, .28));
-      animation: flyUnicorn var(--duration) linear var(--delay) infinite;
+        drop-shadow(0 14px 18px rgba(181, 139, 255, .25))
+        drop-shadow(0 0 20px rgba(255, 142, 212, .32));
+      transform:
+        translate3d(var(--x, 72vw), var(--y, 12vh), 0)
+        rotate(var(--tilt, -4deg))
+        scale(var(--scale, 1));
+      transition: transform var(--move-duration, 1800ms) cubic-bezier(.34, .02, .2, 1);
+      will-change: transform;
     }
 
     .unicorn::before {
       content: "";
       position: absolute;
-      left: 58%;
-      width: calc(var(--size) * 2.45);
+      right: -145%;
+      width: calc(var(--size) * 2.8);
       height: max(7px, calc(var(--size) * .16));
       border-radius: 999px;
-      background: linear-gradient(90deg, rgba(114, 234, 219, .5), rgba(255, 229, 125, .5), rgba(255, 142, 212, .58), transparent);
-      filter: blur(.4px);
-      opacity: .72;
+      background: linear-gradient(90deg, transparent, rgba(255, 142, 212, .36), rgba(255, 229, 125, .34), rgba(114, 234, 219, .36), transparent);
+      filter: blur(.8px);
+      opacity: .58;
+    }
+
+    .unicorn[data-facing="right"]::before {
+      right: auto;
+      left: -145%;
     }
 
     .unicorn-pony {
@@ -93,17 +103,21 @@
       display: block;
       width: 100%;
       height: 100%;
-      overflow: hidden;
       transform-origin: center;
       animation: unicornBob 1.9s ease-in-out infinite;
     }
 
-    .unicorn:nth-child(2) .unicorn-pony,
-    .unicorn:nth-child(4) .unicorn-pony {
-      animation-delay: .45s;
+    .unicorn-sprite {
+      position: relative;
+      display: block;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      transform: scaleX(var(--face, 1));
+      transition: transform .28s ease;
     }
 
-    .unicorn-pony::before {
+    .unicorn-sprite::before {
       content: "";
       position: absolute;
       inset: 0 auto 0 0;
@@ -114,41 +128,8 @@
       animation: unicornFrame .72s steps(4) infinite;
     }
 
-    .unicorn:nth-child(2) .unicorn-pony::before,
-    .unicorn:nth-child(4) .unicorn-pony::before {
-      animation-delay: -.22s;
-    }
-
     .unicorn.u1 {
-      --top: 8vh;
-      --size: 46px;
-      --duration: 16s;
-      --delay: -3s;
-      --opacity: .84;
-    }
-
-    .unicorn.u2 {
-      --top: 81vh;
-      --size: 52px;
-      --duration: 19s;
-      --delay: -8s;
-      --opacity: .78;
-    }
-
-    .unicorn.u3 {
-      --top: 18vh;
-      --size: 30px;
-      --duration: 14s;
-      --delay: -11s;
-      --opacity: .42;
-    }
-
-    .unicorn.u4 {
-      --top: 89vh;
-      --size: 34px;
-      --duration: 17s;
-      --delay: -1s;
-      --opacity: .48;
+      --size: clamp(82px, 9vmin, 124px);
     }
 
     .window {
@@ -319,38 +300,68 @@
       left: 0;
       top: 0;
       z-index: 30;
-      width: 26px;
-      height: 26px;
+      width: 36px;
+      height: 38px;
       opacity: 0;
       pointer-events: none;
-      transform: translate(-50%, -50%);
+      transform: translate(-3px, -3px) rotate(-8deg);
       transition: opacity .18s ease;
+      filter:
+        drop-shadow(0 4px 5px rgba(126, 95, 227, .24))
+        drop-shadow(0 0 10px rgba(255, 142, 212, .42));
     }
 
     .magic-cursor::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #ff7cd8 0%, #9a82ff 45%, #72eadb 100%);
+      clip-path: polygon(0 0, 0 82%, 25% 61%, 42% 100%, 58% 94%, 43% 57%, 78% 57%);
+    }
+
+    .magic-cursor::after {
+      content: "";
+      position: absolute;
+      left: 6px;
+      top: 7px;
+      width: 9px;
+      height: 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .64);
+      rotate: -22deg;
+    }
+
+    .cursor-sparkle,
+    .unicorn-sparkle {
+      position: fixed;
+      z-index: 29;
+      width: var(--spark-size, 12px);
+      height: var(--spark-size, 12px);
+      color: var(--spark-color, #ff8ed4);
+      font-size: var(--spark-size, 12px);
+      line-height: 1;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      text-shadow:
+        0 0 8px currentColor,
+        0 0 18px rgba(255, 255, 255, .88);
+    }
+
+    .cursor-sparkle::before,
+    .unicorn-sparkle::before {
       content: "✦";
       position: absolute;
       inset: 0;
-      color: #ff8ed4;
-      font-size: 25px;
-      line-height: 1;
-      text-align: center;
-      text-shadow:
-        0 0 8px rgba(255, 142, 212, .72),
-        0 0 18px rgba(139, 223, 255, .82);
-      animation: cursorPulse .9s ease-in-out infinite;
     }
 
-    .trail-sparkle {
-      position: fixed;
-      z-index: 29;
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255, 255, 255, .96), rgba(255, 142, 212, .8) 45%, transparent 72%);
-      pointer-events: none;
-      transform: translate(-50%, -50%);
-      animation: fadeTrail 760ms ease-out forwards;
+    .cursor-sparkle {
+      animation: cursorSpark 720ms ease-out forwards;
+    }
+
+    .unicorn-sparkle {
+      z-index: 3;
+      opacity: .68;
+      animation: unicornSpark 1380ms ease-out forwards;
     }
 
     @keyframes openStage {
@@ -377,21 +388,12 @@
       }
     }
 
-    @keyframes flyUnicorn {
-      from {
-        translate: 0 0;
-      }
-      to {
-        translate: -136vw 0;
-      }
-    }
-
     @keyframes unicornBob {
       0%, 100% {
-        transform: translateY(0) rotate(-4deg);
+        transform: translateY(0) rotate(-3deg);
       }
       50% {
-        transform: translateY(-10px) rotate(5deg);
+        transform: translateY(-12%) rotate(4deg);
       }
     }
 
@@ -439,22 +441,25 @@
       }
     }
 
-    @keyframes cursorPulse {
-      0%, 100% {
-        scale: 1;
-        rotate: 0deg;
+    @keyframes cursorSpark {
+      0% {
+        opacity: .9;
+        transform: translate(-50%, -50%) translate(0, 0) scale(.72) rotate(0deg);
       }
-      50% {
-        scale: 1.18;
-        rotate: 12deg;
+      to {
+        opacity: 0;
+        transform: translate(-50%, -50%) translate(var(--spark-x, -16px), var(--spark-y, -20px)) scale(.08) rotate(var(--spark-spin, 110deg));
       }
     }
 
-    @keyframes fadeTrail {
+    @keyframes unicornSpark {
+      0% {
+        opacity: .72;
+        transform: translate(-50%, -50%) translate(0, 0) scale(.78) rotate(0deg);
+      }
       to {
         opacity: 0;
-        scale: .28;
-        translate: 0 -16px;
+        transform: translate(-50%, -50%) translate(var(--spark-x, 44px), var(--spark-y, -18px)) scale(.12) rotate(var(--spark-spin, 180deg));
       }
     }
 
@@ -481,21 +486,8 @@
         letter-spacing: .45em;
       }
 
-      .unicorn.u2,
-      .unicorn.u4 {
-        display: none;
-      }
-
       .unicorn.u1 {
-        --top: 18vh;
-        --size: 24px;
-        --duration: 14s;
-      }
-
-      .unicorn.u3 {
-        --top: 74vh;
-        --size: 22px;
-        --duration: 16s;
+        --size: clamp(58px, 18vw, 76px);
       }
 
       .stage {
@@ -536,9 +528,9 @@
     @media (prefers-reduced-motion: reduce) {
       .unicorn,
       .unicorn-pony,
-      .unicorn-pony::before,
-      .trail-sparkle,
-      .magic-cursor::before,
+      .unicorn-sprite::before,
+      .cursor-sparkle,
+      .unicorn-sparkle,
       .window::before,
       body::before {
         animation: none;
@@ -550,16 +542,9 @@
 <body>
   <div class="unicorn-field" aria-hidden="true">
     <span class="unicorn u1">
-      <span class="unicorn-pony"></span>
-    </span>
-    <span class="unicorn u2">
-      <span class="unicorn-pony"></span>
-    </span>
-    <span class="unicorn u3">
-      <span class="unicorn-pony"></span>
-    </span>
-    <span class="unicorn u4">
-      <span class="unicorn-pony"></span>
+      <span class="unicorn-pony">
+        <span class="unicorn-sprite"></span>
+      </span>
     </span>
   </div>
 
@@ -656,27 +641,139 @@
 
     const magicCursor = document.getElementById("magic-cursor");
     const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-    let lastTrail = 0;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const sparkleColors = ["#ff8ed4", "#b895ff", "#8bdfff", "#72eadb", "#ffe57d"];
+
+    function randomBetween(min, max) {
+      return min + Math.random() * (max - min);
+    }
+
+    function clamp(value, min, max) {
+      return Math.min(Math.max(value, min), max);
+    }
+
+    function makeSparkle(className, x, y, options = {}) {
+      const sparkle = document.createElement("span");
+      sparkle.className = className;
+      sparkle.style.left = `${x}px`;
+      sparkle.style.top = `${y}px`;
+      sparkle.style.setProperty("--spark-color", options.color || sparkleColors[Math.floor(Math.random() * sparkleColors.length)]);
+      sparkle.style.setProperty("--spark-size", `${options.size || randomBetween(8, 16)}px`);
+      sparkle.style.setProperty("--spark-x", `${options.driftX ?? randomBetween(-28, 22)}px`);
+      sparkle.style.setProperty("--spark-y", `${options.driftY ?? randomBetween(-36, -12)}px`);
+      sparkle.style.setProperty("--spark-spin", `${options.spin || randomBetween(90, 240)}deg`);
+      document.body.appendChild(sparkle);
+      setTimeout(() => sparkle.remove(), options.life || 1500);
+    }
+
+    const unicorn = document.querySelector(".unicorn");
+    const wanderPoints = [
+      [0.73, 0.10],
+      [0.18, 0.20],
+      [0.66, 0.34],
+      [0.84, 0.62],
+      [0.48, 0.78],
+      [0.12, 0.66],
+      [0.30, 0.38]
+    ];
+
+    let wanderIndex = 0;
+    let lastUnicornSparkle = 0;
+
+    function setUnicornPosition(x, y, duration, tilt, face, scale = 1) {
+      unicorn.style.setProperty("--x", `${x}px`);
+      unicorn.style.setProperty("--y", `${y}px`);
+      unicorn.style.setProperty("--tilt", `${tilt}deg`);
+      unicorn.style.setProperty("--face", face);
+      unicorn.style.setProperty("--scale", scale.toFixed(2));
+      unicorn.style.setProperty("--move-duration", `${duration}ms`);
+      unicorn.dataset.x = String(x);
+      unicorn.dataset.y = String(y);
+      unicorn.dataset.facing = face === "-1" ? "right" : "left";
+    }
+
+    function moveUnicorn() {
+      if (!unicorn || reducedMotion) return;
+
+      const rect = unicorn.getBoundingClientRect();
+      const width = rect.width || 150;
+      const height = rect.height || 92;
+      const pad = Math.max(16, Math.min(window.innerWidth, window.innerHeight) * 0.035);
+      const point = wanderPoints[wanderIndex % wanderPoints.length];
+      const jitterX = randomBetween(-window.innerWidth * 0.07, window.innerWidth * 0.07);
+      const jitterY = randomBetween(-window.innerHeight * 0.08, window.innerHeight * 0.08);
+      const previousX = Number(unicorn.dataset.x || window.innerWidth * 0.7);
+      const previousY = Number(unicorn.dataset.y || window.innerHeight * 0.12);
+      const nextX = clamp(point[0] * window.innerWidth + jitterX, pad, window.innerWidth - width - pad);
+      const nextY = clamp(point[1] * window.innerHeight + jitterY, pad, window.innerHeight - height - pad);
+      const dx = nextX - previousX;
+      const dy = nextY - previousY;
+      const distance = Math.hypot(dx, dy);
+      const duration = Math.round(clamp(distance * 4.6 + randomBetween(520, 980), 1450, 3300));
+      const tilt = clamp(dy * 0.08, -14, 14);
+      const scale = randomBetween(0.94, 1.08);
+      const face = dx > 4 ? "-1" : "1";
+
+      setUnicornPosition(nextX, nextY, duration, tilt, face, scale);
+      wanderIndex = (wanderIndex + 1 + Math.floor(Math.random() * 2)) % wanderPoints.length;
+      setTimeout(moveUnicorn, duration * randomBetween(0.62, 0.86));
+    }
+
+    function startUnicorn() {
+      if (!unicorn || reducedMotion) return;
+
+      const rect = unicorn.getBoundingClientRect();
+      const startX = clamp(window.innerWidth * 0.72, 16, window.innerWidth - rect.width - 16);
+      const startY = clamp(window.innerHeight * 0.12, 16, window.innerHeight - rect.height - 16);
+      unicorn.style.transitionDuration = "0ms";
+      setUnicornPosition(startX, startY, 0, -5, "1", 1);
+      requestAnimationFrame(() => {
+        unicorn.style.transitionDuration = "";
+        setTimeout(moveUnicorn, 260);
+      });
+
+      requestAnimationFrame(function sparkleLoop(now) {
+        const currentRect = unicorn.getBoundingClientRect();
+        if (now - lastUnicornSparkle > 96 && currentRect.width > 0) {
+          lastUnicornSparkle = now;
+          const facingRight = unicorn.dataset.facing === "right";
+          const tailX = currentRect.left + currentRect.width * (facingRight ? 0.18 : 0.82);
+          const tailY = currentRect.top + currentRect.height * randomBetween(0.38, 0.62);
+          const driftDirection = facingRight ? -1 : 1;
+          makeSparkle("unicorn-sparkle", tailX + randomBetween(-8, 8), tailY + randomBetween(-8, 8), {
+            driftX: randomBetween(28, 82) * driftDirection,
+            driftY: randomBetween(-30, 18),
+            size: randomBetween(7, 17),
+            life: 1450
+          });
+        }
+        requestAnimationFrame(sparkleLoop);
+      });
+    }
+
+    startUnicorn();
 
     if (finePointer && magicCursor) {
-      window.addEventListener("pointermove", (event) => {
+      let lastTrail = 0;
+
+      document.addEventListener("pointermove", (event) => {
         magicCursor.style.opacity = "1";
         magicCursor.style.left = `${event.clientX}px`;
         magicCursor.style.top = `${event.clientY}px`;
 
         const now = performance.now();
-        if (now - lastTrail > 48) {
+        if (!reducedMotion && now - lastTrail > 34) {
           lastTrail = now;
-          const sparkle = document.createElement("span");
-          sparkle.className = "trail-sparkle";
-          sparkle.style.left = `${event.clientX}px`;
-          sparkle.style.top = `${event.clientY}px`;
-          document.body.appendChild(sparkle);
-          setTimeout(() => sparkle.remove(), 820);
+          makeSparkle("cursor-sparkle", event.clientX + randomBetween(-4, 11), event.clientY + randomBetween(8, 20), {
+            driftX: randomBetween(-26, 18),
+            driftY: randomBetween(-28, -8),
+            size: randomBetween(7, 13),
+            life: 840
+          });
         }
       });
 
-      window.addEventListener("pointerleave", () => {
+      window.addEventListener("blur", () => {
         magicCursor.style.opacity = "0";
       });
     }
