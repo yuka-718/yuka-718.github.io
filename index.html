@@ -80,23 +80,6 @@
       will-change: transform;
     }
 
-    .unicorn::before {
-      content: "";
-      position: absolute;
-      right: -145%;
-      width: calc(var(--size) * 2.8);
-      height: max(7px, calc(var(--size) * .16));
-      border-radius: 999px;
-      background: linear-gradient(90deg, transparent, rgba(255, 142, 212, .36), rgba(255, 229, 125, .34), rgba(114, 234, 219, .36), transparent);
-      filter: blur(.8px);
-      opacity: .58;
-    }
-
-    .unicorn[data-facing="right"]::before {
-      right: auto;
-      left: -145%;
-    }
-
     .unicorn-pony {
       position: relative;
       z-index: 1;
@@ -765,12 +748,14 @@
           const tailX = currentRect.left + currentRect.width * (facingRight ? 0.18 : 0.82);
           const tailY = currentRect.top + currentRect.height * randomBetween(0.38, 0.62);
           const driftDirection = facingRight ? -1 : 1;
-          makeSparkle("unicorn-sparkle", tailX + randomBetween(-8, 8), tailY + randomBetween(-8, 8), {
-            driftX: randomBetween(28, 82) * driftDirection,
-            driftY: randomBetween(-30, 18),
-            size: randomBetween(7, 17),
-            life: 1450
-          });
+          for (let i = 0; i < 2; i += 1) {
+            makeSparkle("unicorn-sparkle", tailX + randomBetween(-16, 12), tailY + randomBetween(-16, 12), {
+              driftX: randomBetween(24, 72) * driftDirection,
+              driftY: randomBetween(-34, 22),
+              size: randomBetween(7, 18),
+              life: randomBetween(1120, 1560)
+            });
+          }
         }
         requestAnimationFrame(sparkleLoop);
       });
