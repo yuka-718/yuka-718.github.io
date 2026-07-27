@@ -60,6 +60,10 @@
       pointer-events: none;
     }
 
+    .mobile-social {
+      display: none;
+    }
+
     .unicorn {
       position: absolute;
       left: 0;
@@ -150,15 +154,23 @@
       border: 1px solid rgba(255, 255, 255, .72);
       border-radius: 22px;
       background: rgba(255, 255, 255, .52);
+      color: rgba(65, 50, 92, .72);
+      text-decoration: none;
       box-shadow:
         0 18px 34px rgba(153, 113, 232, .17),
         inset 0 0 24px rgba(255, 255, 255, .56);
       backdrop-filter: blur(16px);
+      cursor: none;
       opacity: 0;
       transform: translateY(18px) scale(.95);
       animation:
         floatIn 720ms cubic-bezier(.2, .9, .2, 1) 860ms forwards,
         drift 5.2s ease-in-out 1.7s infinite;
+    }
+
+    .mini-window:focus-visible {
+      outline: 3px solid rgba(255, 117, 187, .62);
+      outline-offset: 5px;
     }
 
     .mini-window::before {
@@ -228,10 +240,101 @@
     .mini-content {
       margin: 0;
       padding: 4px 17px 16px;
-      color: rgba(65, 50, 92, .72);
       font-size: 15px;
-      line-height: 1.55;
-      white-space: pre;
+      line-height: 1.35;
+      white-space: normal;
+    }
+
+    .social-title {
+      display: block;
+      margin-bottom: 5px;
+      color: #ff75bb;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .04em;
+    }
+
+    .social-handle {
+      display: block;
+      color: #6f77ff;
+      font-size: 13px;
+      font-weight: 800;
+      overflow-wrap: break-word;
+    }
+
+    .social-note {
+      display: block;
+      margin-top: 7px;
+      color: rgba(65, 50, 92, .58);
+      font-size: 12px;
+    }
+
+    .mini-window.x .social-title {
+      color: #6f77ff;
+    }
+
+    .mini-window:hover .social-handle,
+    .mini-window:focus-visible .social-handle {
+      color: #ff75bb;
+    }
+
+    .mobile-social-card {
+      min-width: 0;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, .72);
+      border-radius: 16px;
+      background:
+        radial-gradient(circle at 20% 16%, rgba(255, 255, 255, .85), transparent 18%),
+        linear-gradient(135deg, rgba(139, 223, 255, .58), rgba(255, 142, 212, .36));
+      color: rgba(65, 50, 92, .74);
+      text-decoration: none;
+      box-shadow:
+        0 12px 24px rgba(153, 113, 232, .14),
+        inset 0 0 20px rgba(255, 255, 255, .54);
+      backdrop-filter: blur(16px);
+    }
+
+    .mobile-social-card:focus-visible {
+      outline: 3px solid rgba(255, 117, 187, .62);
+      outline-offset: 3px;
+    }
+
+    .mobile-social-dots {
+      display: flex;
+      gap: 5px;
+      padding: 8px 10px 4px;
+    }
+
+    .mobile-social-dots span {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .mobile-social-copy {
+      display: block;
+      padding: 0 10px 10px;
+      line-height: 1.15;
+    }
+
+    .mobile-social-title {
+      display: block;
+      color: #ff75bb;
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .mobile-social-handle {
+      display: block;
+      margin-top: 3px;
+      color: #6f77ff;
+      font-size: 9px;
+      font-weight: 800;
+      overflow-wrap: anywhere;
+    }
+
+    .mobile-social-card.x .mobile-social-title {
+      color: #6f77ff;
     }
 
     .dots {
@@ -495,6 +598,17 @@
         display: none;
       }
 
+      .mobile-social {
+        position: fixed;
+        left: 10px;
+        top: 12px;
+        right: 10px;
+        z-index: 8;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 8px;
+      }
+
       .dots {
         gap: 5px;
         margin-bottom: 8px;
@@ -536,48 +650,81 @@
     </span>
   </div>
 
+  <nav class="mobile-social" aria-label="SNS links">
+    <a class="mobile-social-card instagram" href="https://www.instagram.com/yuka_ito_math_science_love/" target="_blank" rel="noopener noreferrer" aria-label="Instagram yuka_ito_math_science_love を開く">
+      <span class="mobile-social-dots" aria-hidden="true">
+        <span class="pink"></span>
+        <span class="yellow"></span>
+        <span class="blue"></span>
+      </span>
+      <span class="mobile-social-copy">
+        <span class="mobile-social-title">Instagram</span>
+        <span class="mobile-social-handle">@yuka_ito_math_<wbr>science_love</span>
+      </span>
+    </a>
+    <a class="mobile-social-card x" href="https://x.com/Oliviahye_yyxy" target="_blank" rel="noopener noreferrer" aria-label="X Oliviahye_yyxy を開く">
+      <span class="mobile-social-dots" aria-hidden="true">
+        <span class="pink"></span>
+        <span class="yellow"></span>
+        <span class="blue"></span>
+      </span>
+      <span class="mobile-social-copy">
+        <span class="mobile-social-title">X</span>
+        <span class="mobile-social-handle">@Oliviahye_yyxy</span>
+      </span>
+    </a>
+  </nav>
+
   <main class="stage">
-    <aside class="mini-window left" aria-label="Dream note window">
+    <a class="mini-window left instagram" href="https://www.instagram.com/yuka_ito_math_science_love/" target="_blank" rel="noopener noreferrer" aria-label="Instagram yuka_ito_math_science_love を開く">
       <div class="mini-bar" aria-hidden="true">
         <span class="mini-dot pink"></span>
         <span class="mini-dot yellow"></span>
         <span class="mini-dot blue"></span>
       </div>
-      <pre class="mini-content">dream.log
-  sparkle = "on"
-  mood = "float"</pre>
-    </aside>
+      <div class="mini-content">
+        <span class="social-title">Instagram</span>
+        <span class="social-handle">@yuka_ito_math_<wbr>science_love</span>
+        <span class="social-note">open profile</span>
+      </div>
+    </a>
 
-    <aside class="mini-window right" aria-label="Status window">
+    <a class="mini-window right x" href="https://x.com/Oliviahye_yyxy" target="_blank" rel="noopener noreferrer" aria-label="X Oliviahye_yyxy を開く">
       <div class="mini-bar" aria-hidden="true">
         <span class="mini-dot pink"></span>
         <span class="mini-dot yellow"></span>
         <span class="mini-dot blue"></span>
       </div>
-      <pre class="mini-content">window.stack
-  layer = 3
-  magic = true</pre>
-    </aside>
+      <div class="mini-content">
+        <span class="social-title">X</span>
+        <span class="social-handle">@Oliviahye_yyxy</span>
+        <span class="social-note">open timeline</span>
+      </div>
+    </a>
 
-    <aside class="mini-window top" aria-label="Cursor effect window">
+    <a class="mini-window top instagram" href="https://www.instagram.com/yuka_ito_math_science_love/" target="_blank" rel="noopener noreferrer" aria-label="Instagram yuka_ito_math_science_love を開く">
       <div class="mini-bar" aria-hidden="true">
         <span class="mini-dot pink"></span>
         <span class="mini-dot yellow"></span>
         <span class="mini-dot blue"></span>
       </div>
-      <pre class="mini-content">cursor.fx
-  trail = "pastel"</pre>
-    </aside>
+      <div class="mini-content">
+        <span class="social-title">insta.feed</span>
+        <span class="social-handle">@yuka_ito_math_<wbr>science_love</span>
+      </div>
+    </a>
 
-    <aside class="mini-window bottom" aria-label="Unicorn route window">
+    <a class="mini-window bottom x" href="https://x.com/Oliviahye_yyxy" target="_blank" rel="noopener noreferrer" aria-label="X Oliviahye_yyxy を開く">
       <div class="mini-bar" aria-hidden="true">
         <span class="mini-dot pink"></span>
         <span class="mini-dot yellow"></span>
         <span class="mini-dot blue"></span>
       </div>
-      <pre class="mini-content">orbit.map
-  speed = "slow"</pre>
-    </aside>
+      <div class="mini-content">
+        <span class="social-title">x.post</span>
+        <span class="social-handle">@Oliviahye_yyxy</span>
+      </div>
+    </a>
 
     <section class="window" aria-label="Profile window">
       <div class="dots" aria-hidden="true">
