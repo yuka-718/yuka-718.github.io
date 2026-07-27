@@ -66,7 +66,7 @@
       top: var(--top);
       display: grid;
       place-items: center;
-      width: calc(var(--size) * 1.55);
+      width: calc(var(--size) * 1.62);
       height: var(--size);
       opacity: var(--opacity);
       filter:
@@ -93,6 +93,7 @@
       display: block;
       width: 100%;
       height: 100%;
+      overflow: hidden;
       transform-origin: center;
       animation: unicornBob 1.9s ease-in-out infinite;
     }
@@ -102,41 +103,20 @@
       animation-delay: .45s;
     }
 
-    .unicorn-img {
-      position: relative;
-      z-index: 2;
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
-
-    .unicorn-leg {
+    .unicorn-pony::before {
+      content: "";
       position: absolute;
-      z-index: 3;
-      bottom: 12%;
-      width: 9%;
-      height: 20%;
-      border: 1.6px solid #282431;
-      border-top: 0;
-      border-radius: 0 0 999px 999px;
-      background: #fffdfc;
-      transform-origin: 50% 5%;
-      animation: hoofFlutter .48s ease-in-out infinite;
+      inset: 0 auto 0 0;
+      width: 400%;
+      height: 100%;
+      background: url("assets/unicorn-flight.png") 0 0 / 100% 100% no-repeat;
+      will-change: transform;
+      animation: unicornFrame .72s steps(4) infinite;
     }
 
-    .unicorn-leg.front {
-      left: 24%;
-    }
-
-    .unicorn-leg.mid {
-      left: 34%;
-      animation-delay: -.18s;
-    }
-
-    .unicorn-leg.back {
-      left: 58%;
-      animation-delay: -.3s;
+    .unicorn:nth-child(2) .unicorn-pony::before,
+    .unicorn:nth-child(4) .unicorn-pony::before {
+      animation-delay: -.22s;
     }
 
     .unicorn.u1 {
@@ -415,12 +395,9 @@
       }
     }
 
-    @keyframes hoofFlutter {
-      0%, 100% {
-        transform: rotate(-18deg) translateY(0);
-      }
-      50% {
-        transform: rotate(22deg) translateY(-2px);
+    @keyframes unicornFrame {
+      to {
+        transform: translateX(-100%);
       }
     }
 
@@ -559,7 +536,7 @@
     @media (prefers-reduced-motion: reduce) {
       .unicorn,
       .unicorn-pony,
-      .unicorn-leg,
+      .unicorn-pony::before,
       .trail-sparkle,
       .magic-cursor::before,
       .window::before,
@@ -573,36 +550,16 @@
 <body>
   <div class="unicorn-field" aria-hidden="true">
     <span class="unicorn u1">
-      <span class="unicorn-pony">
-        <img class="unicorn-img" src="assets/unicorn.png" alt="">
-        <span class="unicorn-leg front"></span>
-        <span class="unicorn-leg mid"></span>
-        <span class="unicorn-leg back"></span>
-      </span>
+      <span class="unicorn-pony"></span>
     </span>
     <span class="unicorn u2">
-      <span class="unicorn-pony">
-        <img class="unicorn-img" src="assets/unicorn.png" alt="">
-        <span class="unicorn-leg front"></span>
-        <span class="unicorn-leg mid"></span>
-        <span class="unicorn-leg back"></span>
-      </span>
+      <span class="unicorn-pony"></span>
     </span>
     <span class="unicorn u3">
-      <span class="unicorn-pony">
-        <img class="unicorn-img" src="assets/unicorn.png" alt="">
-        <span class="unicorn-leg front"></span>
-        <span class="unicorn-leg mid"></span>
-        <span class="unicorn-leg back"></span>
-      </span>
+      <span class="unicorn-pony"></span>
     </span>
     <span class="unicorn u4">
-      <span class="unicorn-pony">
-        <img class="unicorn-img" src="assets/unicorn.png" alt="">
-        <span class="unicorn-leg front"></span>
-        <span class="unicorn-leg mid"></span>
-        <span class="unicorn-leg back"></span>
-      </span>
+      <span class="unicorn-pony"></span>
     </span>
   </div>
 
