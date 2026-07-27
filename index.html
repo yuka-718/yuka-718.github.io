@@ -28,6 +28,7 @@
       content: "✦     ✧        ✦   ✧       ✦      ✧";
       position: fixed;
       inset: 7vh 0 auto 0;
+      z-index: 0;
       color: rgba(181, 139, 255, .35);
       font-size: clamp(22px, 3.2vw, 46px);
       letter-spacing: .85em;
@@ -39,6 +40,7 @@
 
     .stage {
       position: relative;
+      z-index: 2;
       width: min(860px, calc(100vw - 40px), calc((100vh - 40px) * 1.289));
       height: min(667px, calc((100vw - 40px) / 1.289), calc(100vh - 40px));
       display: grid;
@@ -48,6 +50,88 @@
       filter: drop-shadow(0 28px 46px rgba(168, 118, 232, .22));
       transform: scaleX(0.04) scaleY(0.02);
       animation: openStage 900ms cubic-bezier(.2, .9, .2, 1) forwards;
+    }
+
+    .unicorn-field {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .unicorn {
+      position: absolute;
+      left: -16vw;
+      top: var(--top);
+      display: grid;
+      place-items: center;
+      width: calc(var(--size) * 1.35);
+      height: var(--size);
+      opacity: var(--opacity);
+      filter:
+        drop-shadow(0 8px 12px rgba(181, 139, 255, .2))
+        drop-shadow(0 0 16px rgba(255, 142, 212, .28));
+      animation: flyUnicorn var(--duration) linear var(--delay) infinite;
+    }
+
+    .unicorn::before {
+      content: "";
+      position: absolute;
+      right: 58%;
+      width: calc(var(--size) * 2.45);
+      height: max(7px, calc(var(--size) * .16));
+      border-radius: 999px;
+      background: linear-gradient(90deg, transparent, rgba(255, 142, 212, .58), rgba(255, 229, 125, .5), rgba(114, 234, 219, .5));
+      filter: blur(.4px);
+      opacity: .72;
+    }
+
+    .unicorn-icon {
+      position: relative;
+      z-index: 1;
+      display: block;
+      font-size: var(--size);
+      line-height: 1;
+      transform-origin: center;
+      animation: unicornBob 1.9s ease-in-out infinite;
+    }
+
+    .unicorn:nth-child(2) .unicorn-icon,
+    .unicorn:nth-child(4) .unicorn-icon {
+      animation-delay: .45s;
+    }
+
+    .unicorn.u1 {
+      --top: 16vh;
+      --size: 38px;
+      --duration: 18s;
+      --delay: -8s;
+      --opacity: .72;
+    }
+
+    .unicorn.u2 {
+      --top: 70vh;
+      --size: 46px;
+      --duration: 22s;
+      --delay: -2s;
+      --opacity: .62;
+    }
+
+    .unicorn.u3 {
+      --top: 38vh;
+      --size: 30px;
+      --duration: 16s;
+      --delay: -13s;
+      --opacity: .48;
+    }
+
+    .unicorn.u4 {
+      --top: 84vh;
+      --size: 34px;
+      --duration: 20s;
+      --delay: -10s;
+      --opacity: .44;
     }
 
     .window {
@@ -276,6 +360,24 @@
       }
     }
 
+    @keyframes flyUnicorn {
+      from {
+        translate: 0 0;
+      }
+      to {
+        translate: 132vw 0;
+      }
+    }
+
+    @keyframes unicornBob {
+      0%, 100% {
+        transform: translateY(0) rotate(-4deg);
+      }
+      50% {
+        transform: translateY(-10px) rotate(5deg);
+      }
+    }
+
     @keyframes floatIn {
       to {
         opacity: .96;
@@ -356,6 +458,23 @@
         letter-spacing: .45em;
       }
 
+      .unicorn.u2,
+      .unicorn.u4 {
+        display: none;
+      }
+
+      .unicorn.u1 {
+        --top: 18vh;
+        --size: 24px;
+        --duration: 14s;
+      }
+
+      .unicorn.u3 {
+        --top: 74vh;
+        --size: 22px;
+        --duration: 16s;
+      }
+
       .stage {
         width: min(calc(100vw - 14px), calc((100vh - 14px) * 1.08));
         height: min(calc((100vw - 14px) * 0.9259), calc(100vh - 14px));
@@ -390,10 +509,28 @@
         line-height: 1.2;
       }
     }
+
+    @media (prefers-reduced-motion: reduce) {
+      .unicorn,
+      .unicorn-icon,
+      .trail-sparkle,
+      .magic-cursor::before,
+      .window::before,
+      body::before {
+        animation: none;
+      }
+    }
   </style>
 </head>
 
 <body>
+  <div class="unicorn-field" aria-hidden="true">
+    <span class="unicorn u1"><span class="unicorn-icon">🦄</span></span>
+    <span class="unicorn u2"><span class="unicorn-icon">🦄</span></span>
+    <span class="unicorn u3"><span class="unicorn-icon">🦄</span></span>
+    <span class="unicorn u4"><span class="unicorn-icon">🦄</span></span>
+  </div>
+
   <main class="stage">
     <aside class="mini-window left" aria-label="Dream note window">
       <div class="mini-bar" aria-hidden="true">
