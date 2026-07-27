@@ -16,19 +16,18 @@
       min-height: 100vh;
       display: grid;
       place-items: center;
-      background: #bff8ff;
+      background: #ffffff;
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
       color: #111;
       overflow: hidden;
     }
 
     .stage {
-      width: min(calc(100vw - 16px), calc((100vh - 16px) * 16 / 9));
-      height: min(calc((100vw - 16px) * 9 / 16), calc(100vh - 16px));
+      width: min(720px, calc(100vw - 40px), calc((100vh - 40px) * 1.08));
+      height: min(667px, calc((100vw - 40px) * 0.9259), calc(100vh - 40px));
       display: grid;
       place-items: center;
-      background: #bff8ff;
-      padding: 3.2%;
+      padding: 0;
       overflow: hidden;
       transform: scaleX(0.04) scaleY(0.02);
       animation: openStage 900ms cubic-bezier(.2, .9, .2, 1) forwards;
@@ -40,24 +39,21 @@
       display: flex;
       flex-direction: column;
       min-height: 0;
-      background: #ffb6e6;
-      border-radius: 28px;
-      padding: 22px;
-      opacity: 0;
-      transform: translateY(28px) scale(.92);
-      animation: popWindow 700ms cubic-bezier(.2, .9, .2, 1) 650ms forwards;
+      background: linear-gradient(135deg, #4f75ff 0%, #8164ef 42%, #f45aa8 100%);
+      border-radius: clamp(18px, 2.2vw, 32px);
+      padding: clamp(12px, 1.9vmin, 24px);
     }
 
     .dots {
       display: flex;
-      gap: 12px;
+      gap: clamp(7px, 1.1vmin, 12px);
       flex: 0 0 auto;
-      margin-bottom: 24px;
+      margin-bottom: clamp(10px, 1.8vmin, 22px);
     }
 
     .dot {
-      width: 28px;
-      height: 28px;
+      width: clamp(14px, 2.6vmin, 28px);
+      height: clamp(14px, 2.6vmin, 28px);
       border-radius: 50%;
       animation: bounce 1.4s ease-in-out infinite;
     }
@@ -70,27 +66,27 @@
       animation-delay: .3s;
     }
 
-    .pink { background: #ff1aaa; }
-    .yellow { background: #ffdc4d; }
-    .blue { background: #49d8df; }
+    .pink { background: #ff3b38; }
+    .yellow { background: #ffd84d; }
+    .blue { background: #12bd42; }
 
     .code {
       flex: 1;
       margin: 0;
       background: white;
-      border-radius: 28px;
-      padding: clamp(14px, 2.1vw, 34px);
+      border-radius: clamp(16px, 2vw, 30px);
+      padding: clamp(12px, 2.2vmin, 28px);
       min-height: 0;
       font-family: inherit;
-      font-size: clamp(16px, 2.75vw, 52px);
-      line-height: 1.09;
-      white-space: pre-wrap;
+      font-size: clamp(14px, min(3.25vw, 4.3vh), 32px);
+      line-height: 1.18;
+      white-space: pre;
       overflow: hidden;
     }
 
     .kw { color: #4f75ff; }
     .name { color: #ff741f; }
-    .str { color: #20ee82; }
+    .str { color: #36c870; }
 
     .cursor {
       display: inline-block;
@@ -117,13 +113,6 @@
       }
     }
 
-    @keyframes popWindow {
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
-
     @keyframes bounce {
       0%, 100% {
         transform: translateY(0);
@@ -145,14 +134,13 @@
       }
 
       .stage {
-        width: min(calc(100vw - 8px), calc((100vh - 8px) * 16 / 9));
-        height: min(calc((100vw - 8px) * 9 / 16), calc(100vh - 8px));
-        padding: 3.5%;
+        width: min(calc(100vw - 14px), calc((100vh - 14px) * 1.08));
+        height: min(calc((100vw - 14px) * 0.9259), calc(100vh - 14px));
       }
 
       .window {
         border-radius: 16px;
-        padding: 8px;
+        padding: 7px;
       }
 
       .dots {
@@ -168,8 +156,8 @@
       .code {
         border-radius: 14px;
         padding: 8px;
-        font-size: clamp(7px, 2.1vw, 10px);
-        line-height: 1.22;
+        font-size: clamp(7px, min(2.2vw, 1.35vh), 10px);
+        line-height: 1.2;
       }
     }
   </style>
