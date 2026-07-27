@@ -370,30 +370,67 @@
       z-index: 1;
       flex: 1;
       margin: 0;
-      background: rgba(255, 255, 255, .94);
+      background:
+        radial-gradient(circle at 16% 18%, rgba(255, 117, 187, .13), transparent 24%),
+        radial-gradient(circle at 86% 20%, rgba(114, 234, 219, .15), transparent 25%),
+        radial-gradient(circle at 50% 100%, rgba(184, 149, 255, .13), transparent 34%),
+        linear-gradient(135deg, rgba(255, 255, 255, .97), rgba(255, 249, 255, .95) 55%, rgba(242, 255, 253, .92));
       border-radius: clamp(16px, 2vw, 30px);
       padding: clamp(12px, 2.2vmin, 28px);
       min-height: 0;
       font-family: inherit;
       font-size: clamp(14px, min(3.25vw, 4.3vh), 32px);
       line-height: 1.18;
+      color: #6d5b93;
+      font-weight: 700;
       white-space: pre;
       overflow: hidden;
+      text-shadow: 0 0 11px rgba(255, 255, 255, .84);
       box-shadow:
         inset 0 0 0 1px rgba(255, 255, 255, .72),
         0 14px 30px rgba(129, 100, 239, .13);
     }
 
-    .kw { color: #7c82ff; }
-    .name { color: #ff8a58; }
-    .str { color: #48c982; }
+    .code span {
+      position: relative;
+      z-index: 1;
+    }
+
+    .plain {
+      color: #6d5b93;
+    }
+
+    .kw {
+      color: #8b8cff;
+      text-shadow:
+        0 0 9px rgba(139, 140, 255, .28),
+        0 0 16px rgba(255, 255, 255, .82);
+    }
+
+    .name {
+      color: #ff78b7;
+      text-shadow:
+        0 0 9px rgba(255, 120, 183, .24),
+        0 0 16px rgba(255, 255, 255, .82);
+    }
+
+    .str {
+      color: #35c7b6;
+      text-shadow:
+        0 0 9px rgba(53, 199, 182, .25),
+        0 0 16px rgba(255, 255, 255, .82);
+    }
 
     .cursor {
       display: inline-block;
       width: .55em;
       height: 1em;
       margin-left: 2px;
-      background: #111;
+      background: linear-gradient(180deg, #ff75bb, #b895ff 54%, #72eadb);
+      border-radius: .12em;
+      box-shadow:
+        0 0 8px rgba(255, 117, 187, .38),
+        0 0 14px rgba(114, 234, 219, .34);
       vertical-align: -0.12em;
       animation: blink .75s steps(1) infinite;
     }
@@ -764,7 +801,7 @@
 
     function makeSpan(className) {
       const span = document.createElement("span");
-      if (className) span.className = className;
+      span.className = className || "plain";
       code.insertBefore(span, cursor);
       return span;
     }
