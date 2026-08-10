@@ -119,6 +119,68 @@
       --size: clamp(112px, 13vmin, 172px);
     }
 
+    .creature-field {
+      position: fixed;
+      inset: 0;
+      z-index: 5;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .creature {
+      position: absolute;
+      left: 0;
+      top: 0;
+      display: block;
+      width: var(--size);
+      opacity: .96;
+      transform:
+        translate3d(var(--x, 10vw), var(--y, 70vh), 0)
+        rotate(var(--tilt, 0deg))
+        scale(var(--scale, 1));
+      transition: transform var(--move-duration, 6000ms) cubic-bezier(.34, .04, .22, 1);
+      filter:
+        drop-shadow(0 11px 14px rgba(90, 73, 153, .2))
+        drop-shadow(0 0 13px rgba(255, 255, 255, .68));
+      will-change: transform;
+    }
+
+    .creature img {
+      display: block;
+      width: 100%;
+      height: auto;
+      transform-origin: center;
+      animation: creatureStep var(--step-duration, 1s) ease-in-out infinite;
+      will-change: transform;
+    }
+
+    .creature.fish {
+      --size: clamp(112px, 13vmin, 180px);
+      --x: 7vw;
+      --y: 70vh;
+      --step-duration: 1.7s;
+      --step-height: -5px;
+      --step-angle: -1.5deg;
+    }
+
+    .creature.beetle {
+      --size: clamp(106px, 12vmin, 164px);
+      --x: 45vw;
+      --y: 14vh;
+      --step-duration: .68s;
+      --step-height: -8px;
+      --step-angle: 2deg;
+    }
+
+    .creature.macho {
+      --size: clamp(94px, 11vmin, 150px);
+      --x: 78vw;
+      --y: 60vh;
+      --step-duration: .88s;
+      --step-height: -6px;
+      --step-angle: -1deg;
+    }
+
     .window {
       width: 100%;
       height: 100%;
@@ -555,6 +617,15 @@
       }
     }
 
+    @keyframes creatureStep {
+      0%, 100% {
+        transform: scaleX(var(--face, 1)) translateY(0) rotate(0deg);
+      }
+      50% {
+        transform: scaleX(var(--face, 1)) translateY(var(--step-height, -6px)) rotate(var(--step-angle, 1deg));
+      }
+    }
+
     @keyframes floatIn {
       to {
         opacity: .96;
@@ -642,6 +713,18 @@
         --size: clamp(78px, 24vw, 106px);
       }
 
+      .creature.fish {
+        --size: clamp(72px, 24vw, 104px);
+      }
+
+      .creature.beetle {
+        --size: clamp(70px, 23vw, 98px);
+      }
+
+      .creature.macho {
+        --size: clamp(64px, 20vw, 88px);
+      }
+
       .stage {
         width: min(calc(100vw - 14px), calc((100vh - 14px) * 1.08));
         height: min(calc((100vw - 14px) * 0.9259), calc(100vh - 14px));
@@ -692,6 +775,8 @@
       .unicorn,
       .unicorn-pony,
       .unicorn-sprite::before,
+      .creature,
+      .creature img,
       .cursor-sparkle,
       .unicorn-sparkle,
       .window::before,
@@ -708,6 +793,18 @@
       <span class="unicorn-pony">
         <span class="unicorn-sprite"></span>
       </span>
+    </span>
+  </div>
+
+  <div class="creature-field" aria-hidden="true">
+    <span class="creature fish" data-native-facing="left">
+      <img src="assets/unicorn-fish.png" alt="">
+    </span>
+    <span class="creature beetle" data-native-facing="right">
+      <img src="assets/unicorn-beetle.png" alt="">
+    </span>
+    <span class="creature macho" data-native-facing="right">
+      <img src="assets/unicorn-macho.png" alt="">
     </span>
   </div>
 
@@ -974,6 +1071,101 @@
     }
 
     startUnicorn();
+
+    const creatureConfigs = [
+      {
+        element: document.querySelector(".creature.fish"),
+        speed: 11.5,
+        minDuration: 5200,
+        maxDuration: 9800,
+        pause: [260, 900],
+        route: [[.07, .72], [.68, .78], [.84, .52], [.28, .44], [.10, .66]]
+      },
+      {
+        element: document.querySelector(".creature.beetle"),
+        speed: 7.4,
+        minDuration: 3600,
+        maxDuration: 7200,
+        pause: [120, 620],
+        route: [[.44, .14], [.80, .24], [.56, .48], [.20, .30], [.38, .66]]
+      },
+      {
+        element: document.querySelector(".creature.macho"),
+        speed: 9.2,
+        minDuration: 4400,
+        maxDuration: 8200,
+        pause: [320, 1100],
+        route: [[.78, .60], [.58, .76], [.84, .36], [.62, .26], [.72, .58]]
+      }
+    ];
+
+    function setCreaturePosition(creature, x, y, duration, tilt, face, scale = 1) {
+      creature.style.setProperty("--x", `${x}px`);
+      creature.style.setProperty("--y", `${y}px`);
+      creature.style.setProperty("--tilt", `${tilt}deg`);
+      creature.style.setProperty("--face", face);
+      creature.style.setProperty("--scale", scale.toFixed(2));
+      creature.style.setProperty("--move-duration", `${duration}ms`);
+      creature.dataset.x = String(x);
+      creature.dataset.y = String(y);
+    }
+
+    function moveCreature(config) {
+      const creature = config.element;
+      if (!creature || reducedMotion) return;
+
+      const rect = creature.getBoundingClientRect();
+      const width = rect.width || 130;
+      const height = rect.height || 130;
+      const pad = Math.max(12, Math.min(window.innerWidth, window.innerHeight) * .018);
+      const point = config.route[config.routeIndex % config.route.length];
+      const jitterX = randomBetween(-window.innerWidth * .035, window.innerWidth * .035);
+      const jitterY = randomBetween(-window.innerHeight * .045, window.innerHeight * .045);
+      const previousX = Number(creature.dataset.x || point[0] * window.innerWidth);
+      const previousY = Number(creature.dataset.y || point[1] * window.innerHeight);
+      const nextX = clamp(point[0] * window.innerWidth + jitterX, pad, window.innerWidth - width - pad);
+      const nextY = clamp(point[1] * window.innerHeight + jitterY, pad, window.innerHeight - height - pad);
+      const dx = nextX - previousX;
+      const dy = nextY - previousY;
+      const distance = Math.hypot(dx, dy);
+      const duration = Math.round(clamp(distance * config.speed + randomBetween(900, 1700), config.minDuration, config.maxDuration));
+      const tilt = clamp(dy * .025, -7, 7);
+      const scale = randomBetween(.94, 1.05);
+      const nativeFacesRight = creature.dataset.nativeFacing === "right";
+      const movingRight = dx >= 0;
+      const face = nativeFacesRight === movingRight ? "1" : "-1";
+
+      setCreaturePosition(creature, nextX, nextY, duration, tilt, face, scale);
+      config.routeIndex = (config.routeIndex + 1) % config.route.length;
+      setTimeout(() => moveCreature(config), duration + randomBetween(config.pause[0], config.pause[1]));
+    }
+
+    function startCreature(config, index) {
+      const creature = config.element;
+      if (!creature || reducedMotion) return;
+
+      const image = creature.querySelector("img");
+      const begin = () => {
+        const rect = creature.getBoundingClientRect();
+        const startPoint = config.route[0];
+        const startX = clamp(startPoint[0] * window.innerWidth, 12, window.innerWidth - rect.width - 12);
+        const startY = clamp(startPoint[1] * window.innerHeight, 12, window.innerHeight - rect.height - 12);
+        const nativeFace = "1";
+
+        config.routeIndex = 1;
+        creature.style.transitionDuration = "0ms";
+        setCreaturePosition(creature, startX, startY, 0, 0, nativeFace, 1);
+        requestAnimationFrame(() => {
+          creature.style.transitionDuration = "";
+          setTimeout(() => moveCreature(config), 700 + index * 420);
+        });
+      };
+
+      if (image?.complete) begin();
+      else image?.addEventListener("load", begin, { once: true });
+    }
+
+    creatureConfigs.forEach(startCreature);
 
     if (finePointer && magicCursor) {
       let lastTrail = 0;
