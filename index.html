@@ -217,6 +217,42 @@
       align-self: center;
     }
 
+    .panel-heading-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .panel-dots {
+      display: flex;
+      flex-shrink: 0;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .panel-dots i {
+      width: 8px;
+      height: 8px;
+      display: block;
+      border-radius: 50%;
+      background: var(--pink);
+      box-shadow: 0 2px 7px rgba(91, 70, 151, .12);
+    }
+
+    .panel-dots i:nth-child(2) {
+      background: var(--yellow);
+    }
+
+    .panel-dots i:nth-child(3) {
+      background: var(--mint);
+    }
+
+    .profile-dots {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+    }
+
     .profile-art {
       width: clamp(100px, 11vw, 145px);
       aspect-ratio: 1;
@@ -312,7 +348,7 @@
       letter-spacing: .1em;
     }
 
-    .contact-heading span:last-child {
+    .contact-heading > span:last-child {
       color: var(--violet);
     }
 
@@ -410,7 +446,7 @@
       letter-spacing: .1em;
     }
 
-    .activities-heading span:last-child {
+    .activities-heading > span:last-child {
       color: var(--mint-deep);
     }
 
@@ -481,7 +517,7 @@
       letter-spacing: .1em;
     }
 
-    .hobbies-heading span:last-child {
+    .hobbies-heading > span:last-child {
       color: var(--pink-deep);
     }
 
@@ -756,6 +792,7 @@
 
     <main class="dashboard" id="top">
       <section class="panel profile-panel" id="profile" aria-labelledby="profile-name">
+        <span class="panel-dots profile-dots" aria-hidden="true"><i></i><i></i><i></i></span>
         <div class="profile-content">
           <div class="profile-art" tabindex="0" data-status='animate("unicorn")'><span class="profile-unicorn" aria-hidden="true"></span></div>
           <h2 class="profile-name" id="profile-name">伊藤　<ruby>夕夏<rt>ゆか</rt></ruby></h2>
@@ -765,7 +802,7 @@
       </section>
 
       <section class="panel contact-panel" id="contact" aria-labelledby="contact-title">
-        <header class="contact-heading"><span id="contact-title">CONTACT_NODE</span><span>07 CHANNELS</span></header>
+        <header class="contact-heading"><span class="panel-heading-left"><span class="panel-dots" aria-hidden="true"><i></i><i></i><i></i></span><span id="contact-title">CONTACT_NODE</span></span><span>07 CHANNELS</span></header>
         <div class="contact-body">
           <div class="contact-channels">
             <a class="contact-link" data-status='open("instagram")' href="https://www.instagram.com/yuka_ito_math_science_love/" target="_blank" rel="noopener noreferrer"><span class="contact-label">INSTAGRAM</span><span class="contact-value">@yuka_ito_math_science_love</span></a>
@@ -784,7 +821,7 @@
       </section>
 
       <section class="panel activities-panel" id="activity" aria-labelledby="activity-title">
-        <header class="activities-heading"><span id="activity-title">ACTIVITIES</span><span>05 ITEMS</span></header>
+        <header class="activities-heading"><span class="panel-heading-left"><span class="panel-dots" aria-hidden="true"><i></i><i></i><i></i></span><span id="activity-title">ACTIVITIES</span></span><span>05 ITEMS</span></header>
 
         <div class="activity-list">
           <a class="activity-link" data-status='open("mitou_junior")' href="https://jr.mitou.org/" target="_blank" rel="noopener noreferrer"><span class="activity-number">01</span><span>未踏ジュニア2026</span><span class="activity-open">OPEN ↗</span></a>
@@ -797,7 +834,7 @@
       </section>
 
       <section class="panel hobbies-panel" id="hobbies" aria-labelledby="hobbies-title">
-        <header class="hobbies-heading"><span id="hobbies-title">HOBBY_DB</span><span>04 FILES</span></header>
+        <header class="hobbies-heading"><span class="panel-heading-left"><span class="panel-dots" aria-hidden="true"><i></i><i></i><i></i></span><span id="hobbies-title">HOBBY_DB</span></span><span>04 FILES</span></header>
         <div class="hobby-list">
           <div class="hobby-item" tabindex="0" data-status='open("blokus")'><code>[01]</code><span>Blokus</span></div>
           <div class="hobby-item" tabindex="0" data-status='open("kpop")'><code>[02]</code><span>KPOP</span></div>
