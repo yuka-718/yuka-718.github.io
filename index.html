@@ -361,45 +361,15 @@
       text-align: center;
     }
 
-    .line-qr-placeholder {
+    .line-qr {
       width: 100%;
       aspect-ratio: 1;
-      padding: 10px;
-      display: grid;
-      place-items: center;
-      position: relative;
-      border: 1px dashed rgba(77, 60, 128, .28);
+      display: block;
+      border: 1px solid rgba(77, 60, 128, .16);
       border-radius: 16px;
-      background:
-        linear-gradient(90deg, rgba(139, 140, 255, .09) 1px, transparent 1px),
-        linear-gradient(rgba(139, 140, 255, .09) 1px, transparent 1px),
-        rgba(255, 255, 255, .78);
-      background-size: 10px 10px;
-    }
-
-    .line-qr-placeholder::before,
-    .line-qr-placeholder::after {
-      content: "";
-      width: 25%;
-      aspect-ratio: 1;
-      position: absolute;
-      top: 10px;
-      border: 5px double var(--violet);
-      opacity: .38;
-    }
-
-    .line-qr-placeholder::before {
-      left: 10px;
-    }
-
-    .line-qr-placeholder::after {
-      right: 10px;
-    }
-
-    .line-qr-placeholder strong {
-      color: var(--violet);
-      font-size: 9px;
-      letter-spacing: .12em;
+      background: #fff;
+      box-shadow: 0 10px 24px rgba(91, 70, 151, .11);
+      object-fit: cover;
     }
 
     .terminal-panel {
@@ -776,9 +746,9 @@
             <a class="contact-link" href="mailto:finsburyhi113@gmail.com"><span class="contact-label">MAIL / MAIN 1</span><span class="contact-value">finsburyhi113@gmail.com</span></a>
             <a class="contact-link" href="mailto:yuka.ito.0718@gmail.com"><span class="contact-label">MAIL / MAIN 2</span><span class="contact-value">yuka.ito.0718@gmail.com</span></a>
           </div>
-          <div class="line-card" aria-label="LINE QRコード差し替え用スペース">
-            <div class="line-qr-placeholder"><strong>QR IMAGE</strong></div>
-            <span>LINE QR / IMAGE WAITING</span>
+          <div class="line-card">
+            <img class="line-qr" src="assets/line-qr.png" alt="LINE QRコード">
+            <span>LINE QR</span>
           </div>
         </div>
       </section>
