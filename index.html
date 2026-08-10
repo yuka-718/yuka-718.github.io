@@ -404,6 +404,22 @@
       border-radius: 3px;
     }
 
+    .profile-ruby {
+      position: relative;
+      z-index: 1;
+      ruby-align: center;
+      ruby-position: over;
+    }
+
+    .profile-ruby rt {
+      color: #8b8cff;
+      font-size: .42em;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: .08em;
+      text-shadow: 0 0 7px rgba(139, 140, 255, .24);
+    }
+
     .plain {
       color: #6d5b93;
     }
@@ -766,7 +782,8 @@
     const parts = [
       ["class", "kw"], [" ", ""], ["Profile", "name"], [":\n\n", ""],
       ["  def", "kw"], [" ", ""], ["__init__", "name"], ["(self):\n", ""],
-      ["    self.name = ", ""], ['"Yuka Ito"', "str"], ["\n", ""],
+      ["    self.name = ", ""], ['"伊藤　', "str"], ["夕夏", "str", null, "ゆか"], ['"', "str"], ["\n", ""],
+      ["    self.affiliation = ", ""], ['"盛岡中央高等学校"', "str"], ["\n", ""],
       ["    self.birth_date = ", ""], ['"2008/7/18"', "str"], ["\n", ""],
       ["    self.blood_type = ", ""], ['"O"', "str"], ["\n", ""],
       ["    self.other = [\n", ""],
@@ -785,7 +802,22 @@
     let charIndex = 0;
     let currentSpan = null;
 
-    function makeSpan(className, href) {
+    function makeSpan(className, href, rubyText) {
+      if (rubyText) {
+        const ruby = document.createElement("ruby");
+        ruby.className = "profile-ruby";
+
+        const base = document.createElement("span");
+        base.className = className || "plain";
+
+        const annotation = document.createElement("rt");
+        annotation.textContent = rubyText;
+
+        ruby.append(base, annotation);
+        code.insertBefore(ruby, cursor);
+        return base;
+      }
+
       const element = document.createElement(href ? "a" : "span");
       element.className = `${className || "plain"}${href ? " code-link" : ""}`;
 
@@ -807,8 +839,9 @@
       const text = parts[partIndex][0];
       const className = parts[partIndex][1];
       const href = parts[partIndex][2];
+      const rubyText = parts[partIndex][3];
 
-      if (!currentSpan) currentSpan = makeSpan(className, href);
+      if (!currentSpan) currentSpan = makeSpan(className, href, rubyText);
 
       currentSpan.textContent += text[charIndex];
       charIndex += 1;
