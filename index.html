@@ -190,9 +190,11 @@
       display: grid;
       place-items: center;
       text-align: center;
+      border-color: rgba(71, 191, 235, .34);
       background:
         radial-gradient(circle at 50% 25%, rgba(255, 255, 255, .98), rgba(255, 255, 255, .66) 44%, transparent 45%),
-        linear-gradient(145deg, #dff8ff, #f1e8ff 52%, #fff1fa);
+        linear-gradient(145deg, #ccefff, #dcf6ff 56%, #effcff);
+      box-shadow: inset 0 4px 0 rgba(139, 223, 255, .72), var(--panel-shadow);
     }
 
     .profile-art {
@@ -274,9 +276,11 @@
       padding: 18px;
       display: flex;
       flex-direction: column;
+      border-color: rgba(139, 140, 255, .3);
       background:
-        radial-gradient(circle at 84% 20%, rgba(139, 223, 255, .32), transparent 30%),
-        linear-gradient(145deg, rgba(255, 255, 255, .96), #f3edff 54%, #fff1fa);
+        radial-gradient(circle at 84% 20%, rgba(255, 255, 255, .72), transparent 28%),
+        linear-gradient(145deg, #eee3ff, #e4ddff 54%, #f8e9ff);
+      box-shadow: inset 0 4px 0 rgba(184, 149, 255, .7), var(--panel-shadow);
     }
 
     .contact-heading {
@@ -288,7 +292,7 @@
     }
 
     .contact-heading span:last-child {
-      color: var(--mint-deep);
+      color: var(--violet);
     }
 
     .contact-body {
@@ -367,11 +371,13 @@
       grid-column: 1 / 3;
       padding: 15px 17px;
       color: var(--ink);
+      border-color: rgba(53, 199, 182, .32);
       background:
-        linear-gradient(rgba(139, 140, 255, .09) 1px, transparent 1px),
-        radial-gradient(circle at 90% 12%, rgba(139, 223, 255, .4), transparent 30%),
-        linear-gradient(135deg, #fff5fb, #eee9ff 52%, #e8fbff);
+        linear-gradient(rgba(53, 199, 182, .095) 1px, transparent 1px),
+        radial-gradient(circle at 90% 12%, rgba(255, 229, 125, .36), transparent 28%),
+        linear-gradient(135deg, #e1fff6, #dcf8ff 52%, #effffb);
       background-size: 100% 24px, auto, auto;
+      box-shadow: inset 0 4px 0 rgba(114, 234, 219, .76), var(--panel-shadow);
     }
 
     .terminal-topbar {
@@ -387,7 +393,7 @@
 
     .terminal-topbar > span:nth-child(2) {
       justify-self: end;
-      color: var(--violet);
+      color: var(--mint-deep);
     }
 
     .terminal-dots {
@@ -479,7 +485,9 @@
       padding: 18px;
       display: flex;
       flex-direction: column;
-      background: linear-gradient(145deg, #fff1fa, #fffdfd 55%, #edfff9);
+      border-color: rgba(255, 120, 183, .3);
+      background: linear-gradient(145deg, #ffe2f0, #fff0e4 55%, #fff8d9);
+      box-shadow: inset 0 4px 0 rgba(255, 142, 212, .72), var(--panel-shadow);
     }
 
     .hobbies-heading {
@@ -491,7 +499,7 @@
     }
 
     .hobbies-heading span:last-child {
-      color: var(--mint-deep);
+      color: var(--pink-deep);
     }
 
     .hobby-list {
