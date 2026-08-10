@@ -63,6 +63,19 @@
       color: inherit;
     }
 
+    @media (pointer: fine) {
+      html,
+      body {
+        cursor: url("assets/cursor-sparkle.svg") 3 2, auto;
+      }
+
+      a,
+      button,
+      [role="button"] {
+        cursor: url("assets/cursor-heart.svg") 3 2, pointer;
+      }
+    }
+
     .site-shell {
       width: calc(100vw - 32px);
       min-height: calc(100vh - 32px);
