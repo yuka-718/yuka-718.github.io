@@ -395,9 +395,33 @@
         0 14px 30px rgba(129, 100, 239, .13);
     }
 
-    .code span {
+    .code span,
+    .code a {
       position: relative;
       z-index: 1;
+    }
+
+    .code-link {
+      color: inherit;
+      text-decoration-color: rgba(53, 199, 182, .48);
+      text-decoration-thickness: .08em;
+      text-underline-offset: .14em;
+      transition: color .18s ease, text-decoration-color .18s ease, text-shadow .18s ease;
+    }
+
+    .code-link:hover,
+    .code-link:focus-visible {
+      color: #19ad9d;
+      text-decoration-color: #ff78b7;
+      text-shadow:
+        0 0 10px rgba(53, 199, 182, .38),
+        0 0 18px rgba(255, 120, 183, .24);
+    }
+
+    .code-link:focus-visible {
+      outline: 2px solid rgba(255, 120, 183, .72);
+      outline-offset: 3px;
+      border-radius: 3px;
     }
 
     .plain {
@@ -790,8 +814,9 @@
       ["    self.birth_date = ", ""], ['"2008/7/18"', "str"], ["\n", ""],
       ["    self.blood_type = ", ""], ['"O"', "str"], ["\n", ""],
       ["    self.other = [\n", ""],
-      ["      ", ""], ['"未踏ジュニア2026"', "str"], ["\n", ""],
-      ["      ", ""], ['"情報科学の達人6期生"', "str"], ["\n", ""],
+      ["      ", ""], ['"未踏ジュニア2026"', "str", "https://jr.mitou.org/"], ["\n", ""],
+      ["      ", ""], ['"情報科学の達人6期生"', "str", "https://tatsujin-camp.com/"], ["\n", ""],
+      ["      ", ""], ['"西澤育英基金第10期奨学生"', "str", "https://www.nishizawa-sf.org/introduction/"], ["\n", ""],
       ["    ]\n\n", ""],
       ["me = Profile()", ""]
     ];
@@ -803,11 +828,18 @@
     let charIndex = 0;
     let currentSpan = null;
 
-    function makeSpan(className) {
-      const span = document.createElement("span");
-      span.className = className || "plain";
-      code.insertBefore(span, cursor);
-      return span;
+    function makeSpan(className, href) {
+      const element = document.createElement(href ? "a" : "span");
+      element.className = `${className || "plain"}${href ? " code-link" : ""}`;
+
+      if (href) {
+        element.href = href;
+        element.target = "_blank";
+        element.rel = "noopener noreferrer";
+      }
+
+      code.insertBefore(element, cursor);
+      return element;
     }
 
     function typeCode() {
@@ -817,8 +849,9 @@
 
       const text = parts[partIndex][0];
       const className = parts[partIndex][1];
+      const href = parts[partIndex][2];
 
-      if (!currentSpan) currentSpan = makeSpan(className);
+      if (!currentSpan) currentSpan = makeSpan(className, href);
 
       currentSpan.textContent += text[charIndex];
       charIndex += 1;
