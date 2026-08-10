@@ -71,7 +71,8 @@
 
       a,
       button,
-      [role="button"] {
+      [role="button"],
+      [data-status] {
         cursor: url("assets/cursor-heart.svg") 3 2, pointer;
       }
     }
@@ -201,13 +202,19 @@
       grid-column: 1;
       padding: 18px;
       display: grid;
-      place-items: center;
+      grid-template-rows: minmax(0, 1fr) auto;
+      place-items: stretch;
       text-align: center;
+      --status-accent: #47bfe9;
       border-color: rgba(71, 191, 235, .34);
       background:
         radial-gradient(circle at 50% 25%, rgba(255, 255, 255, .98), rgba(255, 255, 255, .66) 44%, transparent 45%),
         linear-gradient(145deg, #ccefff, #dcf6ff 56%, #effcff);
       box-shadow: inset 0 4px 0 rgba(139, 223, 255, .72), var(--panel-shadow);
+    }
+
+    .profile-content {
+      align-self: center;
     }
 
     .profile-art {
@@ -289,6 +296,7 @@
       padding: 18px;
       display: flex;
       flex-direction: column;
+      --status-accent: var(--violet);
       border-color: rgba(139, 140, 255, .3);
       background:
         radial-gradient(circle at 84% 20%, rgba(255, 255, 255, .72), transparent 28%),
@@ -383,7 +391,10 @@
     .activities-panel {
       grid-column: 1 / 3;
       padding: 18px;
+      display: flex;
+      flex-direction: column;
       color: var(--ink);
+      --status-accent: var(--mint-deep);
       border-color: rgba(53, 199, 182, .32);
       background:
         radial-gradient(circle at 90% 12%, rgba(255, 229, 125, .36), transparent 28%),
@@ -456,6 +467,7 @@
       padding: 18px;
       display: flex;
       flex-direction: column;
+      --status-accent: var(--pink-deep);
       border-color: rgba(255, 120, 183, .3);
       background: linear-gradient(145deg, #ffe2f0, #fff0e4 55%, #fff8d9);
       box-shadow: inset 0 4px 0 rgba(255, 142, 212, .72), var(--panel-shadow);
@@ -494,6 +506,15 @@
       box-shadow: 0 9px 22px rgba(91, 70, 151, .07);
       font-size: clamp(12px, 1.3vw, 15px);
       font-weight: 500;
+      transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+    }
+
+    .hobby-item:hover,
+    .hobby-item:focus-visible {
+      border-color: rgba(255, 120, 183, .34);
+      box-shadow: 0 11px 24px rgba(91, 70, 151, .11);
+      outline: none;
+      transform: translateY(-2px);
     }
 
     .hobby-item code {
@@ -511,6 +532,47 @@
       border-radius: 50%;
       background: linear-gradient(135deg, var(--pink), var(--mint));
       opacity: .28;
+    }
+
+    .line-card:focus-visible,
+    .profile-art:focus-visible {
+      outline: 2px solid var(--status-accent);
+      outline-offset: 4px;
+    }
+
+    .panel-status {
+      min-height: 25px;
+      margin-top: 12px;
+      padding: 10px 5px 0;
+      display: flex;
+      flex-shrink: 0;
+      align-items: center;
+      gap: 8px;
+      border-top: 1px solid rgba(77, 60, 128, .13);
+      color: var(--ink-soft);
+      font: 500 9px/1 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      letter-spacing: .035em;
+      text-align: left;
+    }
+
+    .panel-status::before {
+      content: ">";
+      color: var(--status-accent);
+      font-weight: 700;
+    }
+
+    .panel-status-cursor {
+      width: 6px;
+      height: 12px;
+      display: inline-block;
+      background: var(--status-accent);
+      animation: statusCursorBlink .78s steps(1) infinite;
+    }
+
+    .panel-status-text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     @keyframes statusPulse {
@@ -536,6 +598,12 @@
     @keyframes unicornFrame {
       to {
         transform: translateX(-100%);
+      }
+    }
+
+    @keyframes statusCursorBlink {
+      50% {
+        opacity: 0;
       }
     }
 
@@ -603,7 +671,7 @@
       }
 
       .profile-panel {
-        min-height: 270px;
+        min-height: 295px;
       }
 
       .profile-art {
@@ -688,57 +756,80 @@
 
     <main class="dashboard" id="top">
       <section class="panel profile-panel" id="profile" aria-labelledby="profile-name">
-        <div>
-          <div class="profile-art"><span class="profile-unicorn" aria-hidden="true"></span></div>
+        <div class="profile-content">
+          <div class="profile-art" tabindex="0" data-status='animate("unicorn")'><span class="profile-unicorn" aria-hidden="true"></span></div>
           <h2 class="profile-name" id="profile-name">伊藤　<ruby>夕夏<rt>ゆか</rt></ruby></h2>
           <div class="profile-meta"><span class="school-pill">盛岡中央高等学校</span><span>2008.07.18</span><span>O</span></div>
         </div>
+        <div class="panel-status" data-default='profile_ready("yuka")'><span class="panel-status-text">profile_ready("yuka")</span><i class="panel-status-cursor" aria-hidden="true"></i></div>
       </section>
 
       <section class="panel contact-panel" id="contact" aria-labelledby="contact-title">
         <header class="contact-heading"><span id="contact-title">CONTACT_NODE</span><span>07 CHANNELS</span></header>
         <div class="contact-body">
           <div class="contact-channels">
-            <a class="contact-link" href="https://www.instagram.com/yuka_ito_math_science_love/" target="_blank" rel="noopener noreferrer"><span class="contact-label">INSTAGRAM</span><span class="contact-value">@yuka_ito_math_science_love</span></a>
-            <a class="contact-link" href="https://x.com/oliviahye_yyxy" target="_blank" rel="noopener noreferrer"><span class="contact-label">X / SUB</span><span class="contact-value">@oliviahye_yyxy</span></a>
-            <a class="contact-link" href="https://x.com/yuka_x_" target="_blank" rel="noopener noreferrer"><span class="contact-label">X / SERIOUS</span><span class="contact-value">@yuka_x_</span></a>
-            <a class="contact-link" href="mailto:finsburyhi113@gmail.com"><span class="contact-label">MAIL / MAIN 1</span><span class="contact-value">finsburyhi113@gmail.com</span></a>
-            <a class="contact-link" href="mailto:yuka.ito.0718@gmail.com"><span class="contact-label">MAIL / MAIN 2</span><span class="contact-value">yuka.ito.0718@gmail.com</span></a>
-            <div class="contact-link"><span class="contact-label">DISCORD ID</span><span class="contact-value">mochimochi.daifuku</span></div>
+            <a class="contact-link" data-status='open("instagram")' href="https://www.instagram.com/yuka_ito_math_science_love/" target="_blank" rel="noopener noreferrer"><span class="contact-label">INSTAGRAM</span><span class="contact-value">@yuka_ito_math_science_love</span></a>
+            <a class="contact-link" data-status='open("x_sub")' href="https://x.com/oliviahye_yyxy" target="_blank" rel="noopener noreferrer"><span class="contact-label">X / SUB</span><span class="contact-value">@oliviahye_yyxy</span></a>
+            <a class="contact-link" data-status='open("x_serious")' href="https://x.com/yuka_x_" target="_blank" rel="noopener noreferrer"><span class="contact-label">X / SERIOUS</span><span class="contact-value">@yuka_x_</span></a>
+            <a class="contact-link" data-status='send("mail_main_1")' href="mailto:finsburyhi113@gmail.com"><span class="contact-label">MAIL / MAIN 1</span><span class="contact-value">finsburyhi113@gmail.com</span></a>
+            <a class="contact-link" data-status='send("mail_main_2")' href="mailto:yuka.ito.0718@gmail.com"><span class="contact-label">MAIL / MAIN 2</span><span class="contact-value">yuka.ito.0718@gmail.com</span></a>
+            <div class="contact-link" tabindex="0" data-status='show("discord_id")'><span class="contact-label">DISCORD ID</span><span class="contact-value">mochimochi.daifuku</span></div>
           </div>
-          <div class="line-card">
+          <div class="line-card" tabindex="0" data-status='scan("line_qr")'>
             <img class="line-qr" src="assets/line-qr.png" alt="LINE QRコード">
             <span>LINE QR</span>
           </div>
         </div>
+        <div class="panel-status" data-default="awaiting_for_message()"><span class="panel-status-text">awaiting_for_message()</span><i class="panel-status-cursor" aria-hidden="true"></i></div>
       </section>
 
       <section class="panel activities-panel" id="activity" aria-labelledby="activity-title">
         <header class="activities-heading"><span id="activity-title">ACTIVITIES</span><span>05 ITEMS</span></header>
 
         <div class="activity-list">
-          <a class="activity-link" href="https://jr.mitou.org/" target="_blank" rel="noopener noreferrer"><span class="activity-number">01</span><span>未踏ジュニア2026</span><span class="activity-open">OPEN ↗</span></a>
-          <a class="activity-link" href="https://www.nii.ac.jp/tatsujin/" target="_blank" rel="noopener noreferrer"><span class="activity-number">02</span><span>情報科学の達人6期生</span><span class="activity-open">OPEN ↗</span></a>
-          <a class="activity-link" href="https://www.ipa.go.jp/jinzai/security-camp/index.html" target="_blank" rel="noopener noreferrer"><span class="activity-number">03</span><span>セキュリティキャンプ2026</span><span class="activity-open">OPEN ↗</span></a>
-          <a class="activity-link" href="https://www.ai-gakkai.or.jp/sig/workshop/sig-fpai_20260626/" target="_blank" rel="noopener noreferrer"><span class="activity-number">04</span><span>第137回 SIGFPAI</span><span class="activity-open">OPEN ↗</span></a>
-          <a class="activity-link" href="https://www.nishizawa-sf.org/introduction/" target="_blank" rel="noopener noreferrer"><span class="activity-number">05</span><span>西澤育英基金第10期奨学生</span><span class="activity-open">OPEN ↗</span></a>
+          <a class="activity-link" data-status='open("mitou_junior")' href="https://jr.mitou.org/" target="_blank" rel="noopener noreferrer"><span class="activity-number">01</span><span>未踏ジュニア2026</span><span class="activity-open">OPEN ↗</span></a>
+          <a class="activity-link" data-status='open("information_science")' href="https://www.nii.ac.jp/tatsujin/" target="_blank" rel="noopener noreferrer"><span class="activity-number">02</span><span>情報科学の達人6期生</span><span class="activity-open">OPEN ↗</span></a>
+          <a class="activity-link" data-status='open("security_camp")' href="https://www.ipa.go.jp/jinzai/security-camp/index.html" target="_blank" rel="noopener noreferrer"><span class="activity-number">03</span><span>セキュリティキャンプ2026</span><span class="activity-open">OPEN ↗</span></a>
+          <a class="activity-link" data-status='open("sigfpai_137")' href="https://www.ai-gakkai.or.jp/sig/workshop/sig-fpai_20260626/" target="_blank" rel="noopener noreferrer"><span class="activity-number">04</span><span>第137回 SIGFPAI</span><span class="activity-open">OPEN ↗</span></a>
+          <a class="activity-link" data-status='open("nishizawa_foundation")' href="https://www.nishizawa-sf.org/introduction/" target="_blank" rel="noopener noreferrer"><span class="activity-number">05</span><span>西澤育英基金第10期奨学生</span><span class="activity-open">OPEN ↗</span></a>
         </div>
+        <div class="panel-status" data-default="awaiting_for_next_challenge()"><span class="panel-status-text">awaiting_for_next_challenge()</span><i class="panel-status-cursor" aria-hidden="true"></i></div>
       </section>
 
       <section class="panel hobbies-panel" id="hobbies" aria-labelledby="hobbies-title">
         <header class="hobbies-heading"><span id="hobbies-title">HOBBY_DB</span><span>04 FILES</span></header>
         <div class="hobby-list">
-          <div class="hobby-item"><code>[01]</code><span>Blokus</span></div>
-          <div class="hobby-item"><code>[02]</code><span>KPOP</span></div>
-          <div class="hobby-item"><code>[03]</code><span>Unicorn</span></div>
-          <div class="hobby-item"><code>[04]</code><span>Cute Things</span></div>
+          <div class="hobby-item" tabindex="0" data-status='open("blokus")'><code>[01]</code><span>Blokus</span></div>
+          <div class="hobby-item" tabindex="0" data-status='open("kpop")'><code>[02]</code><span>KPOP</span></div>
+          <div class="hobby-item" tabindex="0" data-status='open("unicorn")'><code>[03]</code><span>Unicorn</span></div>
+          <div class="hobby-item" tabindex="0" data-status='open("cute_things")'><code>[04]</code><span>Cute Things</span></div>
         </div>
+        <div class="panel-status" data-default="awaiting_for_inspiration()"><span class="panel-status-text">awaiting_for_inspiration()</span><i class="panel-status-cursor" aria-hidden="true"></i></div>
       </section>
     </main>
   </div>
 
   <script>
     requestAnimationFrame(() => document.body.classList.add("is-ready"));
+
+    document.querySelectorAll("[data-status]").forEach((item) => {
+      const status = item.closest(".panel")?.querySelector(".panel-status");
+      const statusText = status?.querySelector(".panel-status-text");
+      if (!status || !statusText) return;
+
+      const showStatus = () => {
+        statusText.textContent = item.dataset.status;
+      };
+
+      const resetStatus = () => {
+        statusText.textContent = status.dataset.default;
+      };
+
+      item.addEventListener("pointerenter", showStatus);
+      item.addEventListener("pointerleave", resetStatus);
+      item.addEventListener("focus", showStatus);
+      item.addEventListener("blur", resetStatus);
+    });
   </script>
 </body>
 </html>
