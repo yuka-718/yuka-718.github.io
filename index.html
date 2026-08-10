@@ -4,548 +4,626 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+  <meta name="theme-color" content="#f7f1ff">
   <title>Yuka Ito</title>
 
   <style>
+    :root {
+      --ink: #252039;
+      --ink-soft: #756a8e;
+      --paper: #fffdfd;
+      --lavender: #b895ff;
+      --violet: #8b8cff;
+      --pink: #ff8ed4;
+      --pink-deep: #ff78b7;
+      --sky: #8bdfff;
+      --mint: #72eadb;
+      --mint-deep: #35c7b6;
+      --yellow: #ffe57d;
+      --line: rgba(77, 60, 128, .13);
+      --panel-shadow: 0 18px 45px rgba(91, 70, 151, .14);
+    }
+
     * {
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
-      position: relative;
       margin: 0;
       min-height: 100vh;
-      display: grid;
-      place-items: center;
+      color: var(--ink);
       background:
-        linear-gradient(160deg, #fff7ff 0%, #f2eeff 38%, #e9fff8 72%, #fff9dc 100%);
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      color: #111;
-      overflow: hidden;
+        linear-gradient(rgba(107, 91, 155, .055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(107, 91, 155, .055) 1px, transparent 1px),
+        radial-gradient(circle at 88% 4%, rgba(139, 223, 255, .56), transparent 28%),
+        radial-gradient(circle at 8% 92%, rgba(255, 142, 212, .3), transparent 30%),
+        linear-gradient(145deg, #f8f3ff, #fff0fa 54%, #eafff9);
+      background-size: 22px 22px, 22px 22px, auto, auto, auto;
+      font-family: Inter, "Avenir Next", "Helvetica Neue", "Noto Sans JP", sans-serif;
+      font-weight: 500;
+      overflow-x: hidden;
     }
 
     body::before {
-      content: "✦     ✧        ✦   ✧       ✦      ✧";
-      position: fixed;
-      inset: 7vh 0 auto 0;
-      z-index: 0;
-      color: rgba(181, 139, 255, .35);
-      font-size: clamp(22px, 3.2vw, 46px);
-      letter-spacing: .85em;
-      line-height: 1;
-      text-align: center;
-      pointer-events: none;
-      animation: twinkle 3.8s ease-in-out infinite;
-    }
-
-    .stage {
-      position: relative;
-      z-index: 2;
-      width: calc(100vw - 40px);
-      height: min(667px, calc(100vh - 40px));
-      display: grid;
-      place-items: center;
-      padding: 0;
-      overflow: visible;
-      filter: drop-shadow(0 28px 46px rgba(168, 118, 232, .22));
-      transform: scaleX(0.04) scaleY(0.02);
-      animation: openStage 900ms cubic-bezier(.2, .9, .2, 1) forwards;
-    }
-
-    .unicorn-field {
+      content: "";
       position: fixed;
       inset: 0;
-      z-index: 4;
-      overflow: hidden;
+      z-index: -1;
+      background:
+        radial-gradient(circle at 55% 20%, rgba(255, 255, 255, .8), transparent 26%),
+        radial-gradient(circle at 36% 76%, rgba(114, 234, 219, .18), transparent 23%);
       pointer-events: none;
     }
 
-    .mobile-social {
-      display: none;
+    a {
+      color: inherit;
     }
 
-    .unicorn {
+    .site-shell {
+      width: calc(100vw - 32px);
+      min-height: calc(100vh - 32px);
+      margin: 16px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 12px;
+    }
+
+    .topbar {
+      min-height: 48px;
+      padding: 0 15px;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 18px;
+      position: relative;
+      z-index: 10;
+      background: rgba(255, 255, 255, .78);
+      border: 1px solid rgba(255, 255, 255, .94);
+      border-radius: 15px;
+      box-shadow: 0 12px 28px rgba(91, 70, 151, .1);
+      backdrop-filter: blur(18px);
+    }
+
+    .wordmark {
+      color: var(--ink);
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -.045em;
+      text-decoration: none;
+    }
+
+    .system-status {
+      justify-self: center;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font: 500 10px/1 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      letter-spacing: .11em;
+    }
+
+    .status-light {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--mint-deep);
+      box-shadow: 0 0 0 4px rgba(53, 199, 182, .13), 0 0 14px rgba(53, 199, 182, .64);
+      animation: statusPulse 2.2s ease-in-out infinite;
+    }
+
+    .main-nav {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font: 500 10px/1 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      letter-spacing: .08em;
+    }
+
+    .main-nav a {
+      padding: 8px 0;
+      position: relative;
+      text-decoration: none;
+    }
+
+    .main-nav a::after {
+      content: "";
       position: absolute;
       left: 0;
-      top: 0;
+      right: 100%;
+      bottom: 2px;
+      height: 1px;
+      background: linear-gradient(90deg, var(--pink), var(--mint));
+      transition: right .22s ease;
+    }
+
+    .main-nav a:hover::after,
+    .main-nav a:focus-visible::after {
+      right: 0;
+    }
+
+    .dashboard {
+      min-height: 0;
       display: grid;
-      place-items: center;
-      width: calc(var(--size) * 1.62);
-      height: var(--size);
-      opacity: .94;
-      filter:
-        drop-shadow(0 14px 18px rgba(181, 139, 255, .25))
-        drop-shadow(0 0 20px rgba(255, 142, 212, .32));
-      transform:
-        translate3d(var(--x, 72vw), var(--y, 12vh), 0)
-        rotate(var(--tilt, -4deg))
-        scale(var(--scale, 1));
-      transition: transform var(--move-duration, 1800ms) cubic-bezier(.34, .02, .2, 1);
-      will-change: transform;
+      grid-template-columns: minmax(0, 1.2fr) minmax(260px, .82fr) minmax(230px, .78fr);
+      grid-template-rows: minmax(280px, .94fr) minmax(300px, 1.06fr);
+      gap: 12px;
     }
 
-    .unicorn-pony {
+    .panel {
       position: relative;
-      z-index: 1;
-      display: block;
-      width: 100%;
-      height: 100%;
-      transform-origin: center;
-      animation: unicornBob 2.7s ease-in-out infinite;
-    }
-
-    .unicorn-sprite {
-      position: relative;
-      display: block;
-      width: 100%;
-      height: 100%;
       overflow: hidden;
-      transform: scaleX(var(--face, 1));
-      transition: transform .28s ease;
+      border: 1px solid rgba(255, 255, 255, .92);
+      border-radius: 20px;
+      box-shadow: var(--panel-shadow);
+      opacity: 0;
+      transform: translateY(14px) scale(.985);
+      transition: opacity .55s ease, transform .55s cubic-bezier(.2, .8, .2, 1), box-shadow .25s ease;
     }
 
-    .unicorn-sprite::before {
+    body.is-ready .panel {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    body.is-ready .profile-panel {
+      transition-delay: .08s;
+    }
+
+    body.is-ready .terminal-panel {
+      transition-delay: .14s;
+    }
+
+    body.is-ready .hobbies-panel {
+      transition-delay: .2s;
+    }
+
+    .hero-panel {
+      grid-column: 1 / 3;
+      padding: clamp(18px, 2.4vw, 30px);
+      color: #fff;
+      background:
+        repeating-linear-gradient(0deg, rgba(255, 255, 255, .08) 0 1px, transparent 1px 5px),
+        linear-gradient(125deg, var(--lavender), var(--pink) 62%, var(--sky));
+    }
+
+    .hero-command {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      z-index: 3;
+      font: 500 10px/1 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      letter-spacing: .09em;
+    }
+
+    .hero-command span:last-child::before {
+      content: "[";
+    }
+
+    .hero-command span:last-child::after {
+      content: "]";
+    }
+
+    .hero-title {
+      margin: clamp(55px, 8vh, 90px) 0 0 -8px;
+      position: relative;
+      z-index: 3;
+      color: #fff;
+      font-size: clamp(86px, 13vw, 178px);
+      font-weight: 600;
+      line-height: .67;
+      letter-spacing: -.105em;
+      text-shadow: 0 14px 42px rgba(94, 54, 146, .14);
+    }
+
+    .hero-subline {
+      position: absolute;
+      left: clamp(18px, 2.4vw, 30px);
+      right: clamp(18px, 2.4vw, 30px);
+      bottom: 18px;
+      z-index: 4;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      font: 500 9px/1 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      letter-spacing: .11em;
+    }
+
+    .crosshair {
+      width: clamp(160px, 24vw, 320px);
+      aspect-ratio: 1;
+      position: absolute;
+      top: 50%;
+      right: 5%;
+      border: 1px solid rgba(255, 255, 255, .38);
+      border-radius: 50%;
+      transform: translateY(-50%);
+    }
+
+    .crosshair::before,
+    .crosshair::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      background: rgba(255, 255, 255, .38);
+      transform: translate(-50%, -50%);
+    }
+
+    .crosshair::before {
+      width: 140%;
+      height: 1px;
+    }
+
+    .crosshair::after {
+      width: 1px;
+      height: 140%;
+    }
+
+    .crosshair-ring {
+      position: absolute;
+      inset: 22%;
+      border: 1px dashed rgba(255, 255, 255, .44);
+      border-radius: 50%;
+      animation: ringSpin 18s linear infinite;
+    }
+
+    .scanline {
+      height: 1px;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 12%;
+      z-index: 5;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .78), transparent);
+      animation: scanPass 4.4s linear infinite;
+    }
+
+    .hero-unicorn {
+      width: clamp(128px, 18vw, 245px);
+      aspect-ratio: 1.62;
+      position: absolute;
+      z-index: 4;
+      right: 7%;
+      bottom: 15%;
+      overflow: hidden;
+      filter: drop-shadow(0 14px 18px rgba(91, 56, 148, .2)) drop-shadow(0 0 14px rgba(255, 255, 255, .66));
+      animation: unicornBob 2.8s ease-in-out infinite;
+    }
+
+    .hero-unicorn::before {
       content: "";
       position: absolute;
       inset: 0 auto 0 0;
       width: 400%;
-      height: 100%;
       background: url("assets/unicorn-flight.png") 0 0 / 100% 100% no-repeat;
-      will-change: transform;
       animation: unicornFrame .92s steps(4) infinite;
     }
 
-    .unicorn.u1 {
-      --size: clamp(112px, 13vmin, 172px);
-    }
-
-    .window {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      min-height: 0;
-      position: relative;
-      overflow: hidden;
-      z-index: 3;
-      background: linear-gradient(135deg, #8bdfff 0%, #b895ff 46%, #ff8ed4 100%);
-      border-radius: clamp(18px, 2.2vw, 32px);
-      padding: clamp(12px, 1.9vmin, 24px);
-    }
-
-    .window::before {
-      content: "";
-      position: absolute;
-      inset: 0;
+    .profile-panel {
+      grid-column: 3;
+      padding: 18px;
+      display: grid;
+      place-items: center;
+      text-align: center;
       background:
-        linear-gradient(115deg, rgba(255, 255, 255, .42) 0 13%, transparent 13% 26%, rgba(255, 255, 255, .24) 26% 34%, transparent 34% 100%);
-      opacity: .42;
-      pointer-events: none;
-      transform: translateX(-18%);
-      animation: dreamSheen 5.8s ease-in-out infinite;
+        radial-gradient(circle at 50% 25%, rgba(255, 255, 255, .98), rgba(255, 255, 255, .66) 44%, transparent 45%),
+        linear-gradient(145deg, #dff8ff, #f1e8ff 52%, #fff1fa);
     }
 
-    .mini-window {
+    .profile-index {
       position: absolute;
-      z-index: 5;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, .72);
-      border-radius: 22px;
-      background: rgba(255, 255, 255, .52);
-      color: rgba(65, 50, 92, .72);
-      text-decoration: none;
-      box-shadow:
-        0 18px 34px rgba(153, 113, 232, .17),
-        inset 0 0 24px rgba(255, 255, 255, .56);
-      backdrop-filter: blur(16px);
-      cursor: none;
-      opacity: 0;
-      transform: translateY(18px) scale(.95);
-      animation:
-        floatIn 720ms cubic-bezier(.2, .9, .2, 1) 860ms forwards,
-        drift 5.2s ease-in-out 1.7s infinite;
+      top: 13px;
+      left: 13px;
+      color: rgba(70, 55, 116, .4);
+      font: 500 9px/1 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      letter-spacing: .1em;
     }
 
-    .mini-window:focus-visible {
-      outline: 3px solid rgba(255, 117, 187, .62);
-      outline-offset: 5px;
-    }
-
-    .mini-window::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(circle at 20% 18%, rgba(255, 255, 255, .8), transparent 18%),
-        radial-gradient(circle at 84% 72%, rgba(255, 142, 212, .22), transparent 28%),
-        linear-gradient(135deg, rgba(139, 223, 255, .38), rgba(255, 142, 212, .22));
-      pointer-events: none;
-    }
-
-    .mini-window.left {
-      left: auto;
-      right: 28px;
-      top: 92px;
-      width: 245px;
-      height: 176px;
-      rotate: -5deg;
-    }
-
-    .mini-window.right {
-      right: 28px;
-      top: auto;
-      bottom: 92px;
-      width: 212px;
-      height: 132px;
-      rotate: 4deg;
-      animation-delay: 980ms, 1.9s;
-    }
-
-    .mini-bar,
-    .mini-content {
+    .profile-art {
+      width: clamp(100px, 11vw, 145px);
+      aspect-ratio: 1;
+      margin: 0 auto 14px;
+      display: grid;
+      place-items: center;
       position: relative;
-      z-index: 1;
+      border: 5px solid #fff;
+      border-radius: 45% 55% 48% 52%;
+      background: linear-gradient(135deg, var(--sky), var(--lavender) 48%, var(--pink));
+      box-shadow: 0 16px 34px rgba(92, 73, 153, .19);
+      transform: rotate(4deg);
     }
 
-    .mini-bar {
-      display: flex;
-      gap: 7px;
-      padding: 13px 15px 9px;
+    .profile-art img {
+      width: 76%;
+      border-radius: 12px;
+      mix-blend-mode: multiply;
+      transform: rotate(-4deg);
     }
 
-    .mini-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-    }
-
-    .mini-content {
+    .profile-name {
       margin: 0;
-      padding: 4px 17px 16px;
-      font-size: 15px;
-      line-height: 1.35;
-      white-space: normal;
-    }
-
-    .social-title {
-      display: block;
-      margin-bottom: 5px;
-      color: #ff75bb;
-      font-size: 13px;
+      font-size: clamp(21px, 2.6vw, 31px);
       font-weight: 600;
-      letter-spacing: .04em;
+      letter-spacing: -.04em;
     }
 
-    .social-handle {
-      display: block;
-      color: #6f77ff;
-      font-size: 13px;
-      font-weight: 600;
-      overflow-wrap: break-word;
-    }
-
-    .social-note {
-      display: block;
-      margin-top: 7px;
-      color: rgba(65, 50, 92, .58);
-      font-size: 12px;
-    }
-
-    .mini-window.x .social-title {
-      color: #6f77ff;
-    }
-
-    .mini-window:hover .social-handle,
-    .mini-window:focus-visible .social-handle {
-      color: #ff75bb;
-    }
-
-    .mobile-social-card {
-      min-width: 0;
-      overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, .72);
-      border-radius: 16px;
-      background:
-        radial-gradient(circle at 20% 16%, rgba(255, 255, 255, .85), transparent 18%),
-        linear-gradient(135deg, rgba(139, 223, 255, .58), rgba(255, 142, 212, .36));
-      color: rgba(65, 50, 92, .74);
-      text-decoration: none;
-      box-shadow:
-        0 12px 24px rgba(153, 113, 232, .14),
-        inset 0 0 20px rgba(255, 255, 255, .54);
-      backdrop-filter: blur(16px);
-    }
-
-    .mobile-social-card:focus-visible {
-      outline: 3px solid rgba(255, 117, 187, .62);
-      outline-offset: 3px;
-    }
-
-    .mobile-social-dots {
-      display: flex;
-      gap: 5px;
-      padding: 8px 10px 4px;
-    }
-
-    .mobile-social-dots span {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-    }
-
-    .mobile-social-copy {
-      display: block;
-      padding: 0 10px 10px;
-      line-height: 1.15;
-    }
-
-    .mobile-social-title {
-      display: block;
-      color: #ff75bb;
-      font-size: 10px;
-      font-weight: 600;
-    }
-
-    .mobile-social-handle {
-      display: block;
-      margin-top: 3px;
-      color: #6f77ff;
-      font-size: 9px;
-      font-weight: 600;
-      overflow-wrap: anywhere;
-    }
-
-    .mobile-social-card.x .mobile-social-title {
-      color: #6f77ff;
-    }
-
-    .dots {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      gap: clamp(7px, 1.1vmin, 12px);
-      flex: 0 0 auto;
-      margin-bottom: clamp(10px, 1.8vmin, 22px);
-    }
-
-    .dot {
-      width: clamp(14px, 2.6vmin, 28px);
-      height: clamp(14px, 2.6vmin, 28px);
-      border-radius: 50%;
-      animation: bounce 1.4s ease-in-out infinite;
-    }
-
-    .dot:nth-child(2) {
-      animation-delay: .15s;
-    }
-
-    .dot:nth-child(3) {
-      animation-delay: .3s;
-    }
-
-    .pink { background: #ff75bb; }
-    .yellow { background: #ffe57d; }
-    .blue { background: #72eadb; }
-
-    .code {
-      position: relative;
-      z-index: 1;
-      flex: 1;
-      margin: 0;
-      background:
-        radial-gradient(circle at 16% 18%, rgba(255, 117, 187, .13), transparent 24%),
-        radial-gradient(circle at 86% 20%, rgba(114, 234, 219, .15), transparent 25%),
-        radial-gradient(circle at 50% 100%, rgba(184, 149, 255, .13), transparent 34%),
-        linear-gradient(135deg, rgba(255, 255, 255, .97), rgba(255, 249, 255, .95) 55%, rgba(242, 255, 253, .92));
-      border-radius: clamp(16px, 2vw, 30px);
-      padding: clamp(12px, 2.2vmin, 28px);
-      min-height: 0;
-      font-family: inherit;
-      font-size: clamp(14px, min(3.25vw, 4.3vh), 32px);
-      line-height: 1.18;
-      color: #6d5b93;
-      font-weight: 500;
-      white-space: pre;
-      overflow: hidden;
-      text-shadow: 0 0 11px rgba(255, 255, 255, .84);
-      box-shadow:
-        inset 0 0 0 1px rgba(255, 255, 255, .72),
-        0 14px 30px rgba(129, 100, 239, .13);
-    }
-
-    .code span,
-    .code a {
-      position: relative;
-      z-index: 1;
-    }
-
-    .code-link {
-      color: inherit;
-      text-decoration-color: rgba(53, 199, 182, .48);
-      text-decoration-thickness: .08em;
-      text-underline-offset: .14em;
-      transition: color .18s ease, text-decoration-color .18s ease, text-shadow .18s ease;
-    }
-
-    .code-link:hover,
-    .code-link:focus-visible {
-      color: #19ad9d;
-      text-decoration-color: #ff78b7;
-      text-shadow:
-        0 0 10px rgba(53, 199, 182, .38),
-        0 0 18px rgba(255, 120, 183, .24);
-    }
-
-    .code-link:focus-visible {
-      outline: 2px solid rgba(255, 120, 183, .72);
-      outline-offset: 3px;
-      border-radius: 3px;
-    }
-
-    .profile-ruby {
-      position: relative;
-      z-index: 1;
-      ruby-align: center;
+    .profile-name ruby {
       ruby-position: over;
     }
 
-    .profile-ruby rt {
-      color: #8b8cff;
-      font-size: .42em;
+    .profile-name rt {
+      color: var(--violet);
+      font-size: .36em;
       font-weight: 500;
-      line-height: 1;
-      letter-spacing: .08em;
-      text-shadow: 0 0 7px rgba(139, 140, 255, .24);
+      letter-spacing: .1em;
     }
 
-    .plain {
-      color: #6d5b93;
+    .profile-school {
+      margin: 7px 0 0;
+      color: var(--ink-soft);
+      font-size: 11px;
+      letter-spacing: .04em;
     }
 
-    .kw {
-      color: #8b8cff;
-      text-shadow:
-        0 0 9px rgba(139, 140, 255, .28),
-        0 0 16px rgba(255, 255, 255, .82);
+    .profile-meta {
+      margin-top: 15px;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      font: 500 9px/1 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     }
 
-    .name {
-      color: #ff78b7;
-      text-shadow:
-        0 0 9px rgba(255, 120, 183, .24),
-        0 0 16px rgba(255, 255, 255, .82);
+    .profile-meta span {
+      padding: 7px 9px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .66);
     }
 
-    .str {
-      color: #35c7b6;
-      text-shadow:
-        0 0 9px rgba(53, 199, 182, .25),
-        0 0 16px rgba(255, 255, 255, .82);
+    .terminal-panel {
+      grid-column: 1 / 3;
+      padding: 15px 17px;
+      color: #faf7ff;
+      background:
+        linear-gradient(rgba(139, 140, 255, .055) 1px, transparent 1px),
+        var(--ink);
+      background-size: 100% 24px;
     }
 
-    .cursor {
+    .terminal-topbar {
+      padding-bottom: 11px;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, .13);
+      font: 500 9px/1 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      letter-spacing: .09em;
+    }
+
+    .terminal-topbar > span:nth-child(2) {
+      justify-self: center;
+    }
+
+    .terminal-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .terminal-dots i {
+      width: 8px;
+      height: 8px;
+      display: block;
+      border-radius: 50%;
+      background: var(--pink);
+    }
+
+    .terminal-dots i:nth-child(2) {
+      background: var(--yellow);
+    }
+
+    .terminal-dots i:nth-child(3) {
+      background: var(--mint);
+    }
+
+    .activity-list {
+      margin-top: 13px;
+      display: grid;
+      gap: 5px;
+    }
+
+    .activity-link {
+      min-height: 38px;
+      padding: 7px 9px;
+      display: grid;
+      grid-template-columns: 28px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid transparent;
+      border-radius: 10px;
+      color: #f9f6ff;
+      font: 500 clamp(11px, 1.25vw, 14px)/1.25 ui-monospace, SFMono-Regular, Menlo, "Noto Sans JP", monospace;
+      text-decoration: none;
+      transition: background .2s ease, border-color .2s ease, transform .2s ease;
+    }
+
+    .activity-link:hover,
+    .activity-link:focus-visible {
+      border-color: rgba(114, 234, 219, .28);
+      background: rgba(255, 255, 255, .075);
+      transform: translateX(3px);
+    }
+
+    .activity-number {
+      color: var(--mint);
+    }
+
+    .activity-open {
+      color: var(--pink);
+      font-size: 10px;
+      letter-spacing: .06em;
+    }
+
+    .terminal-command {
+      margin: 9px 9px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #bdb6d4;
+      font: 500 10px/1 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    .terminal-command::before {
+      content: ">";
+      color: var(--mint);
+    }
+
+    .terminal-cursor {
+      width: 6px;
+      height: 12px;
       display: inline-block;
-      width: .55em;
-      height: 1em;
-      margin-left: 2px;
-      background: linear-gradient(180deg, #ff75bb, #b895ff 54%, #72eadb);
-      border-radius: .12em;
-      box-shadow:
-        0 0 8px rgba(255, 117, 187, .38),
-        0 0 14px rgba(114, 234, 219, .34);
-      vertical-align: -0.12em;
-      animation: blink .75s steps(1) infinite;
+      background: var(--mint);
+      animation: cursorBlink .78s steps(1) infinite;
     }
 
-    .magic-cursor {
-      position: fixed;
-      left: 0;
-      top: 0;
-      z-index: 30;
-      width: 48px;
-      height: 50px;
-      opacity: 0;
-      pointer-events: none;
-      transform: translate(-4px, -4px) rotate(-8deg);
-      transition: opacity .18s ease;
-      filter:
-        drop-shadow(0 6px 7px rgba(126, 95, 227, .25))
-        drop-shadow(0 0 13px rgba(255, 142, 212, .46));
+    .hobbies-panel {
+      grid-column: 3;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(145deg, #fff1fa, #fffdfd 55%, #edfff9);
     }
 
-    .magic-cursor::before {
+    .hobbies-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font: 500 10px/1 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      letter-spacing: .1em;
+    }
+
+    .hobbies-heading span:last-child {
+      color: var(--mint-deep);
+    }
+
+    .hobby-list {
+      margin-top: 23px;
+      display: grid;
+      gap: 9px;
+    }
+
+    .hobby-item {
+      min-height: 48px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: rgba(255, 255, 255, .84);
+      box-shadow: 0 9px 22px rgba(91, 70, 151, .07);
+      font-size: clamp(12px, 1.3vw, 15px);
+      font-weight: 500;
+    }
+
+    .hobby-item code {
+      color: var(--violet);
+      font: 500 10px/1 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    .hobby-item::after {
       content: "";
+      width: 28px;
+      height: 28px;
       position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, #ff7cd8 0%, #9a82ff 45%, #72eadb 100%);
-      clip-path: polygon(0 0, 0 82%, 25% 61%, 42% 100%, 58% 94%, 43% 57%, 78% 57%);
+      right: -12px;
+      bottom: -13px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--pink), var(--mint));
+      opacity: .28;
     }
 
-    .cursor-sparkle,
-    .unicorn-sparkle {
-      position: fixed;
-      z-index: 29;
-      width: var(--spark-size, 12px);
-      height: var(--spark-size, 12px);
-      color: var(--spark-color, #ff8ed4);
-      font-size: var(--spark-size, 12px);
-      line-height: 1;
-      pointer-events: none;
-      transform: translate(-50%, -50%);
-      text-shadow:
-        0 0 8px currentColor,
-        0 0 18px rgba(255, 255, 255, .88);
+    .hobby-note {
+      margin-top: auto;
+      padding-top: 18px;
+      color: var(--ink-soft);
+      font: 500 9px/1.5 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     }
 
-    .cursor-sparkle::before,
-    .unicorn-sparkle::before {
-      content: "✦";
-      position: absolute;
-      inset: 0;
+    .footerline {
+      min-height: 36px;
+      padding: 0 7px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      color: var(--ink);
+      font: 500 9px/1 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      letter-spacing: .08em;
     }
 
-    .cursor-sparkle {
-      animation: cursorSpark 720ms ease-out forwards;
+    .social-links {
+      display: flex;
+      gap: 17px;
     }
 
-    .unicorn-sparkle {
-      z-index: 3;
-      opacity: .68;
-      animation: unicornSpark 1380ms ease-out forwards;
+    .social-links a {
+      position: relative;
+      text-decoration: none;
     }
 
-    @keyframes openStage {
-      0% {
-        transform: scaleX(0.04) scaleY(0.02);
-        border-radius: 999px;
-      }
-      55% {
-        transform: scaleX(1) scaleY(0.04);
-        border-radius: 999px;
-      }
-      100% {
-        transform: scaleX(1) scaleY(1);
-        border-radius: 0;
-      }
+    .social-links a::before {
+      content: "> ";
+      color: var(--pink-deep);
     }
 
-    @keyframes bounce {
+    .footer-note {
+      color: var(--ink-soft);
+    }
+
+    @keyframes statusPulse {
       0%, 100% {
-        transform: translateY(0);
+        opacity: .58;
+        transform: scale(.88);
       }
       50% {
-        transform: translateY(-7px);
+        opacity: 1;
+        transform: scale(1.08);
+      }
+    }
+
+    @keyframes scanPass {
+      0% {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      14%, 86% {
+        opacity: .82;
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(350px);
+      }
+    }
+
+    @keyframes ringSpin {
+      to {
+        transform: rotate(360deg);
       }
     }
 
     @keyframes unicornBob {
       0%, 100% {
-        transform: translateY(0) rotate(-3deg);
+        transform: translateY(0) rotate(-2deg);
       }
       50% {
-        transform: translateY(-12%) rotate(4deg);
+        transform: translateY(-10px) rotate(3deg);
       }
     }
 
@@ -555,450 +633,273 @@
       }
     }
 
-    @keyframes floatIn {
-      to {
-        opacity: .96;
-        transform: translateY(0) scale(1);
-      }
-    }
-
-    @keyframes drift {
-      0%, 100% {
-        translate: 0 0;
-      }
-      50% {
-        translate: 0 -9px;
-      }
-    }
-
-    @keyframes dreamSheen {
-      0%, 100% {
-        transform: translateX(-18%);
-        opacity: .34;
-      }
-      50% {
-        transform: translateX(12%);
-        opacity: .56;
-      }
-    }
-
-    @keyframes twinkle {
-      0%, 100% {
-        opacity: .42;
-        transform: translateY(0);
-      }
-      50% {
-        opacity: .72;
-        transform: translateY(-7px);
-      }
-    }
-
-    @keyframes cursorSpark {
-      0% {
-        opacity: .9;
-        transform: translate(-50%, -50%) translate(0, 0) scale(.72) rotate(0deg);
-      }
-      to {
-        opacity: 0;
-        transform: translate(-50%, -50%) translate(var(--spark-x, -16px), var(--spark-y, -20px)) scale(.08) rotate(var(--spark-spin, 110deg));
-      }
-    }
-
-    @keyframes unicornSpark {
-      0% {
-        opacity: .72;
-        transform: translate(-50%, -50%) translate(0, 0) scale(.78) rotate(0deg);
-      }
-      to {
-        opacity: 0;
-        transform: translate(-50%, -50%) translate(var(--spark-x, 44px), var(--spark-y, -18px)) scale(.12) rotate(var(--spark-spin, 180deg));
-      }
-    }
-
-    @keyframes blink {
+    @keyframes cursorBlink {
       50% {
         opacity: 0;
       }
     }
 
-    @media (hover: hover) and (pointer: fine) {
-      body {
-        cursor: none;
-      }
-    }
-
-    @media (max-width: 700px) {
-      body {
-        overflow: auto;
+    @media (max-width: 980px) {
+      .dashboard {
+        grid-template-columns: minmax(0, 1fr) minmax(230px, .72fr);
+        grid-template-rows: minmax(300px, auto) auto auto;
       }
 
-      body::before {
-        inset: 18vh 0 auto 0;
-        font-size: 18px;
-        letter-spacing: .45em;
+      .hero-panel {
+        grid-column: 1 / 3;
       }
 
-      .unicorn.u1 {
-        --size: clamp(78px, 24vw, 106px);
+      .profile-panel {
+        grid-column: 1;
       }
 
-      .stage {
-        width: min(calc(100vw - 14px), calc((100vh - 14px) * 1.08));
-        height: min(calc((100vw - 14px) * 0.9259), calc(100vh - 14px));
-        overflow: hidden;
+      .hobbies-panel {
+        grid-column: 2;
       }
 
-      .window {
-        width: 100%;
-        border-radius: 16px;
-        padding: 7px;
+      .terminal-panel {
+        grid-column: 1 / 3;
+        grid-row: 3;
       }
 
-      .mini-window,
-      .magic-cursor {
+      .main-nav a:nth-child(2) {
         display: none;
       }
+    }
 
-      .mobile-social {
-        position: fixed;
-        left: 10px;
-        top: 12px;
-        right: 10px;
-        z-index: 8;
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    @media (max-width: 680px) {
+      .site-shell {
+        width: calc(100vw - 16px);
+        min-height: calc(100vh - 16px);
+        margin: 8px;
         gap: 8px;
       }
 
-      .dots {
-        gap: 5px;
-        margin-bottom: 8px;
+      .topbar {
+        min-height: 45px;
+        padding: 0 11px;
+        grid-template-columns: auto 1fr;
       }
 
-      .dot {
-        width: 10px;
-        height: 10px;
+      .system-status {
+        display: none;
       }
 
-      .code {
-        border-radius: 14px;
-        padding: 8px;
-        font-size: clamp(7px, min(2.2vw, 1.35vh), 10px);
-        line-height: 1.2;
+      .main-nav {
+        justify-self: end;
+        gap: 12px;
+        font-size: 9px;
+      }
+
+      .main-nav a:nth-child(2) {
+        display: block;
+      }
+
+      .dashboard {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .panel {
+        border-radius: 16px;
+      }
+
+      .hero-panel {
+        min-height: 300px;
+        padding: 15px;
+      }
+
+      .hero-command {
+        font-size: 8px;
+      }
+
+      .hero-title {
+        margin-top: 90px;
+        font-size: clamp(76px, 25vw, 104px);
+      }
+
+      .hero-subline {
+        left: 15px;
+        right: 15px;
+        bottom: 13px;
+        font-size: 7px;
+      }
+
+      .hero-subline span:last-child {
+        display: none;
+      }
+
+      .crosshair {
+        width: 175px;
+        right: -18px;
+      }
+
+      .hero-unicorn {
+        width: 132px;
+        right: 1%;
+        bottom: 19%;
+      }
+
+      .profile-panel {
+        min-height: 270px;
+      }
+
+      .profile-art {
+        width: 102px;
+      }
+
+      .hobbies-panel {
+        min-height: 265px;
+      }
+
+      .hobby-list {
+        margin-top: 16px;
+      }
+
+      .terminal-panel {
+        padding: 13px 10px;
+      }
+
+      .terminal-topbar {
+        grid-template-columns: auto 1fr;
+        font-size: 7px;
+      }
+
+      .terminal-topbar > span:nth-child(2) {
+        justify-self: end;
+      }
+
+      .terminal-topbar > span:last-child {
+        display: none;
+      }
+
+      .activity-link {
+        min-height: 44px;
+        grid-template-columns: 23px minmax(0, 1fr) auto;
+        gap: 7px;
+        font-size: 10px;
+      }
+
+      .activity-open {
+        font-size: 8px;
+      }
+
+      .footerline {
+        min-height: 50px;
+        align-items: flex-start;
+        flex-direction: column;
+        justify-content: center;
+        gap: 7px;
+        font-size: 8px;
       }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .unicorn,
-      .unicorn-pony,
-      .unicorn-sprite::before,
-      .cursor-sparkle,
-      .unicorn-sparkle,
-      .window::before,
-      body::before {
-        animation: none;
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .001ms !important;
       }
     }
   </style>
 </head>
 
 <body>
-  <div class="unicorn-field" aria-hidden="true">
-    <span class="unicorn u1">
-      <span class="unicorn-pony">
-        <span class="unicorn-sprite"></span>
-      </span>
-    </span>
+  <div class="site-shell">
+    <header class="topbar">
+      <a class="wordmark" href="#top" aria-label="トップへ">YUKA//01</a>
+      <div class="system-status" aria-label="システム稼働中"><i class="status-light" aria-hidden="true"></i> SYSTEM ONLINE</div>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a href="#profile">PROFILE_</a>
+        <a href="#activity">ACTIVITY_</a>
+        <a href="#social">SOCIAL_</a>
+      </nav>
+    </header>
+
+    <main class="dashboard" id="top">
+      <section class="panel hero-panel" aria-labelledby="hero-title">
+        <div class="hero-command"><span>&gt; boot_profile.exe</span><span>READY</span></div>
+        <h1 class="hero-title" id="hero-title">YUKA</h1>
+        <div class="crosshair" aria-hidden="true"><span class="crosshair-ring"></span></div>
+        <span class="hero-unicorn" aria-hidden="true"></span>
+        <span class="scanline" aria-hidden="true"></span>
+        <div class="hero-subline"><span>PERSONAL ARCHIVE / 2026</span><span>MODE: PASTEL CYBER</span></div>
+      </section>
+
+      <section class="panel profile-panel" id="profile" aria-labelledby="profile-name">
+        <span class="profile-index">ID_0718</span>
+        <div>
+          <div class="profile-art"><img src="assets/unicorn.png" alt=""></div>
+          <h2 class="profile-name" id="profile-name">伊藤　<ruby>夕夏<rt>ゆか</rt></ruby></h2>
+          <p class="profile-school">盛岡中央高等学校</p>
+          <div class="profile-meta"><span>2008.07.18</span><span>BLOOD O</span></div>
+        </div>
+      </section>
+
+      <section class="panel terminal-panel" id="activity" aria-labelledby="activity-title">
+        <header class="terminal-topbar">
+          <div class="terminal-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+          <span id="activity-title">activity_links.py</span>
+          <span>4 RECORDS</span>
+        </header>
+
+        <div class="activity-list">
+          <a class="activity-link" data-command="mitou_junior" href="https://jr.mitou.org/" target="_blank" rel="noopener noreferrer"><span class="activity-number">01</span><span>未踏ジュニア2026</span><span class="activity-open">OPEN ↗</span></a>
+          <a class="activity-link" data-command="information_science" href="https://www.nii.ac.jp/tatsujin/" target="_blank" rel="noopener noreferrer"><span class="activity-number">02</span><span>情報科学の達人6期生</span><span class="activity-open">OPEN ↗</span></a>
+          <a class="activity-link" data-command="security_camp" href="https://www.ipa.go.jp/jinzai/security-camp/index.html" target="_blank" rel="noopener noreferrer"><span class="activity-number">03</span><span>セキュリティキャンプ2026</span><span class="activity-open">OPEN ↗</span></a>
+          <a class="activity-link" data-command="nishizawa_foundation" href="https://www.nishizawa-sf.org/introduction/" target="_blank" rel="noopener noreferrer"><span class="activity-number">04</span><span>西澤育英基金第10期奨学生</span><span class="activity-open">OPEN ↗</span></a>
+        </div>
+
+        <div class="terminal-command"><span id="terminal-command-text">await next_challenge()</span><i class="terminal-cursor" aria-hidden="true"></i></div>
+      </section>
+
+      <section class="panel hobbies-panel" id="hobbies" aria-labelledby="hobbies-title">
+        <header class="hobbies-heading"><span id="hobbies-title">HOBBY_DB</span><span>03 FILES</span></header>
+        <div class="hobby-list">
+          <div class="hobby-item"><code>[01]</code><span>Blokus</span></div>
+          <div class="hobby-item"><code>[02]</code><span>KPOP</span></div>
+          <div class="hobby-item"><code>[03]</code><span>ユニコーン</span></div>
+        </div>
+        <div class="hobby-note">self.hobbies = ["Blokus", "KPOP", "ユニコーン"]</div>
+      </section>
+    </main>
+
+    <footer class="footerline" id="social">
+      <div class="social-links">
+        <a href="https://www.instagram.com/yuka_ito_math_science_love/" target="_blank" rel="noopener noreferrer">INSTAGRAM</a>
+        <a href="https://x.com/Oliviahye_yyxy" target="_blank" rel="noopener noreferrer">X</a>
+      </div>
+      <div class="footer-note">PASTEL NETWORK / CONNECTED</div>
+    </footer>
   </div>
 
-  <nav class="mobile-social" aria-label="SNS links">
-    <a class="mobile-social-card instagram" href="https://www.instagram.com/yuka_ito_math_science_love/" target="_blank" rel="noopener noreferrer" aria-label="Instagram yuka_ito_math_science_love を開く">
-      <span class="mobile-social-dots" aria-hidden="true">
-        <span class="pink"></span>
-        <span class="yellow"></span>
-        <span class="blue"></span>
-      </span>
-      <span class="mobile-social-copy">
-        <span class="mobile-social-title">Instagram</span>
-        <span class="mobile-social-handle">@yuka_ito_math_<wbr>science_love</span>
-      </span>
-    </a>
-    <a class="mobile-social-card x" href="https://x.com/Oliviahye_yyxy" target="_blank" rel="noopener noreferrer" aria-label="X Oliviahye_yyxy を開く">
-      <span class="mobile-social-dots" aria-hidden="true">
-        <span class="pink"></span>
-        <span class="yellow"></span>
-        <span class="blue"></span>
-      </span>
-      <span class="mobile-social-copy">
-        <span class="mobile-social-title">X</span>
-        <span class="mobile-social-handle">@Oliviahye_yyxy</span>
-      </span>
-    </a>
-  </nav>
-
-  <main class="stage">
-    <a class="mini-window left instagram" href="https://www.instagram.com/yuka_ito_math_science_love/" target="_blank" rel="noopener noreferrer" aria-label="Instagram yuka_ito_math_science_love を開く">
-      <div class="mini-bar" aria-hidden="true">
-        <span class="mini-dot pink"></span>
-        <span class="mini-dot yellow"></span>
-        <span class="mini-dot blue"></span>
-      </div>
-      <div class="mini-content">
-        <span class="social-title">Instagram</span>
-        <span class="social-handle">@yuka_ito_math_<wbr>science_love</span>
-        <span class="social-note">open profile</span>
-      </div>
-    </a>
-
-    <a class="mini-window right x" href="https://x.com/Oliviahye_yyxy" target="_blank" rel="noopener noreferrer" aria-label="X Oliviahye_yyxy を開く">
-      <div class="mini-bar" aria-hidden="true">
-        <span class="mini-dot pink"></span>
-        <span class="mini-dot yellow"></span>
-        <span class="mini-dot blue"></span>
-      </div>
-      <div class="mini-content">
-        <span class="social-title">X</span>
-        <span class="social-handle">@Oliviahye_yyxy</span>
-        <span class="social-note">open timeline</span>
-      </div>
-    </a>
-
-    <section class="window" aria-label="Profile window">
-      <div class="dots" aria-hidden="true">
-        <span class="dot pink"></span>
-        <span class="dot yellow"></span>
-        <span class="dot blue"></span>
-      </div>
-
-      <pre class="code" id="code" aria-label="Profile code"></pre>
-    </section>
-  </main>
-
-  <div class="magic-cursor" id="magic-cursor" aria-hidden="true"></div>
-
   <script>
-    const code = document.getElementById("code");
+    const commandText = document.getElementById("terminal-command-text");
+    const activityLinks = document.querySelectorAll(".activity-link");
 
-    const parts = [
-      ["class", "kw"], [" ", ""], ["Profile", "name"], [":\n\n", ""],
-      ["  def", "kw"], [" ", ""], ["__init__", "name"], ["(self):\n", ""],
-      ["    self.name = ", ""], ['"伊藤　', "str"], ["夕夏", "str", null, "ゆか"], ['"', "str"], ["\n", ""],
-      ["    self.affiliation = ", ""], ['"盛岡中央高等学校"', "str"], ["\n", ""],
-      ["    self.birth_date = ", ""], ['"2008/7/18"', "str"], ["\n", ""],
-      ["    self.blood_type = ", ""], ['"O"', "str"], ["\n", ""],
-      ["    self.hobbies = [", ""], ['"Blokus"', "str"], [", ", ""], ['"KPOP"', "str"], [", ", ""], ['"パズル"', "str"], ["]\n", ""],
-      ["    self.other = [\n", ""],
-      ["      ", ""], ['"未踏ジュニア2026"', "str", "https://jr.mitou.org/"], ["\n", ""],
-      ["      ", ""], ['"情報科学の達人6期生"', "str", "https://www.nii.ac.jp/tatsujin/"], ["\n", ""],
-      ["      ", ""], ['"セキュリティキャンプ2026"', "str", "https://www.ipa.go.jp/jinzai/security-camp/index.html"], ["\n", ""],
-      ["      ", ""], ['"西澤育英基金第10期奨学生"', "str", "https://www.nishizawa-sf.org/introduction/"], ["\n", ""],
-      ["    ]\n\n", ""],
-      ["me = Profile()", ""]
-    ];
+    requestAnimationFrame(() => document.body.classList.add("is-ready"));
 
-    const cursor = document.createElement("span");
-    cursor.className = "cursor";
+    activityLinks.forEach((link) => {
+      const showCommand = () => {
+        commandText.textContent = `open("${link.dataset.command}")`;
+      };
 
-    let partIndex = 0;
-    let charIndex = 0;
-    let currentSpan = null;
+      const resetCommand = () => {
+        commandText.textContent = "await next_challenge()";
+      };
 
-    function makeSpan(className, href, rubyText) {
-      if (rubyText) {
-        const ruby = document.createElement("ruby");
-        ruby.className = "profile-ruby";
-
-        const base = document.createElement("span");
-        base.className = className || "plain";
-
-        const annotation = document.createElement("rt");
-        annotation.textContent = rubyText;
-
-        ruby.append(base, annotation);
-        code.insertBefore(ruby, cursor);
-        return base;
-      }
-
-      const element = document.createElement(href ? "a" : "span");
-      element.className = `${className || "plain"}${href ? " code-link" : ""}`;
-
-      if (href) {
-        element.href = href;
-        element.target = "_blank";
-        element.rel = "noopener noreferrer";
-      }
-
-      code.insertBefore(element, cursor);
-      return element;
-    }
-
-    function typeCode() {
-      if (!cursor.parentNode) code.appendChild(cursor);
-
-      if (partIndex >= parts.length) return;
-
-      const text = parts[partIndex][0];
-      const className = parts[partIndex][1];
-      const href = parts[partIndex][2];
-      const rubyText = parts[partIndex][3];
-
-      if (!currentSpan) currentSpan = makeSpan(className, href, rubyText);
-
-      currentSpan.textContent += text[charIndex];
-      charIndex += 1;
-
-      if (charIndex >= text.length) {
-        partIndex += 1;
-        charIndex = 0;
-        currentSpan = null;
-      }
-
-      const delay = text[charIndex - 1] === "\n" ? 90 : 22;
-      setTimeout(typeCode, delay);
-    }
-
-    setTimeout(typeCode, 1250);
-
-    const magicCursor = document.getElementById("magic-cursor");
-    const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const sparkleColors = ["#ff8ed4", "#b895ff", "#8bdfff", "#72eadb", "#ffe57d"];
-
-    function randomBetween(min, max) {
-      return min + Math.random() * (max - min);
-    }
-
-    function clamp(value, min, max) {
-      return Math.min(Math.max(value, min), max);
-    }
-
-    function makeSparkle(className, x, y, options = {}) {
-      const sparkle = document.createElement("span");
-      sparkle.className = className;
-      sparkle.style.left = `${x}px`;
-      sparkle.style.top = `${y}px`;
-      sparkle.style.setProperty("--spark-color", options.color || sparkleColors[Math.floor(Math.random() * sparkleColors.length)]);
-      sparkle.style.setProperty("--spark-size", `${options.size || randomBetween(8, 16)}px`);
-      sparkle.style.setProperty("--spark-x", `${options.driftX ?? randomBetween(-28, 22)}px`);
-      sparkle.style.setProperty("--spark-y", `${options.driftY ?? randomBetween(-36, -12)}px`);
-      sparkle.style.setProperty("--spark-spin", `${options.spin || randomBetween(90, 240)}deg`);
-      document.body.appendChild(sparkle);
-      setTimeout(() => sparkle.remove(), options.life || 1500);
-    }
-
-    const unicorn = document.querySelector(".unicorn");
-    const wanderPoints = [
-      [0.73, 0.10],
-      [0.18, 0.20],
-      [0.66, 0.34],
-      [0.84, 0.62],
-      [0.48, 0.78],
-      [0.12, 0.66],
-      [0.30, 0.38]
-    ];
-
-    let wanderIndex = 0;
-    let lastUnicornSparkle = 0;
-
-    function setUnicornPosition(x, y, duration, tilt, face, scale = 1) {
-      unicorn.style.setProperty("--x", `${x}px`);
-      unicorn.style.setProperty("--y", `${y}px`);
-      unicorn.style.setProperty("--tilt", `${tilt}deg`);
-      unicorn.style.setProperty("--face", face);
-      unicorn.style.setProperty("--scale", scale.toFixed(2));
-      unicorn.style.setProperty("--move-duration", `${duration}ms`);
-      unicorn.dataset.x = String(x);
-      unicorn.dataset.y = String(y);
-      unicorn.dataset.facing = face === "-1" ? "right" : "left";
-    }
-
-    function moveUnicorn() {
-      if (!unicorn || reducedMotion) return;
-
-      const rect = unicorn.getBoundingClientRect();
-      const width = rect.width || 150;
-      const height = rect.height || 92;
-      const pad = Math.max(16, Math.min(window.innerWidth, window.innerHeight) * 0.035);
-      const point = wanderPoints[wanderIndex % wanderPoints.length];
-      const jitterX = randomBetween(-window.innerWidth * 0.07, window.innerWidth * 0.07);
-      const jitterY = randomBetween(-window.innerHeight * 0.08, window.innerHeight * 0.08);
-      const previousX = Number(unicorn.dataset.x || window.innerWidth * 0.7);
-      const previousY = Number(unicorn.dataset.y || window.innerHeight * 0.12);
-      const nextX = clamp(point[0] * window.innerWidth + jitterX, pad, window.innerWidth - width - pad);
-      const nextY = clamp(point[1] * window.innerHeight + jitterY, pad, window.innerHeight - height - pad);
-      const dx = nextX - previousX;
-      const dy = nextY - previousY;
-      const distance = Math.hypot(dx, dy);
-      const duration = Math.round(clamp(distance * 8.8 + randomBetween(1800, 2800), 4200, 8200));
-      const tilt = clamp(dy * 0.06, -10, 10);
-      const scale = randomBetween(0.96, 1.07);
-      const face = dx > 4 ? "-1" : "1";
-
-      setUnicornPosition(nextX, nextY, duration, tilt, face, scale);
-      wanderIndex = (wanderIndex + 1 + Math.floor(Math.random() * 2)) % wanderPoints.length;
-      setTimeout(moveUnicorn, duration * randomBetween(0.96, 1.32));
-    }
-
-    function startUnicorn() {
-      if (!unicorn || reducedMotion) return;
-
-      const rect = unicorn.getBoundingClientRect();
-      const startX = clamp(window.innerWidth * 0.72, 16, window.innerWidth - rect.width - 16);
-      const startY = clamp(window.innerHeight * 0.12, 16, window.innerHeight - rect.height - 16);
-      unicorn.style.transitionDuration = "0ms";
-      setUnicornPosition(startX, startY, 0, -5, "1", 1);
-      requestAnimationFrame(() => {
-        unicorn.style.transitionDuration = "";
-        setTimeout(moveUnicorn, 500);
-      });
-
-      requestAnimationFrame(function sparkleLoop(now) {
-        const currentRect = unicorn.getBoundingClientRect();
-        if (now - lastUnicornSparkle > 118 && currentRect.width > 0) {
-          lastUnicornSparkle = now;
-          const facingRight = unicorn.dataset.facing === "right";
-          const tailX = currentRect.left + currentRect.width * (facingRight ? 0.18 : 0.82);
-          const tailY = currentRect.top + currentRect.height * randomBetween(0.38, 0.62);
-          const driftDirection = facingRight ? -1 : 1;
-          for (let i = 0; i < 2; i += 1) {
-            makeSparkle("unicorn-sparkle", tailX + randomBetween(-16, 12), tailY + randomBetween(-16, 12), {
-              driftX: randomBetween(24, 72) * driftDirection,
-              driftY: randomBetween(-34, 22),
-              size: randomBetween(7, 18),
-              life: randomBetween(1120, 1560)
-            });
-          }
-        }
-        requestAnimationFrame(sparkleLoop);
-      });
-    }
-
-    startUnicorn();
-
-    if (finePointer && magicCursor) {
-      let lastTrail = 0;
-
-      document.addEventListener("pointermove", (event) => {
-        magicCursor.style.opacity = "1";
-        magicCursor.style.left = `${event.clientX}px`;
-        magicCursor.style.top = `${event.clientY}px`;
-
-        const now = performance.now();
-        if (!reducedMotion && now - lastTrail > 34) {
-          lastTrail = now;
-          makeSparkle("cursor-sparkle", event.clientX + randomBetween(-4, 11), event.clientY + randomBetween(8, 20), {
-            driftX: randomBetween(-26, 18),
-            driftY: randomBetween(-28, -8),
-            size: randomBetween(7, 13),
-            life: 840
-          });
-        }
-      });
-
-      window.addEventListener("blur", () => {
-        magicCursor.style.opacity = "0";
-      });
-    }
+      link.addEventListener("pointerenter", showCommand);
+      link.addEventListener("pointerleave", resetCommand);
+      link.addEventListener("focus", showCommand);
+      link.addEventListener("blur", resetCommand);
+    });
   </script>
 </body>
 </html>
